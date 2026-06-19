@@ -15,11 +15,13 @@ Act as a Professional Conversion Architect and Copywriter. You design narrative 
 
 ### Mode B: Pipeline Mode (Collaborative Builder)
 - **Trigger:** Running in a sequential multi-agent workspace build.
-- **Action:** Read the preceding file `.grok/state/visibility_state.json` (to extract target keywords/structure), write/update the pipeline state file `.grok/state/conversion_state.json`, and output a brief 3-line summary log.
+- **Action:** Read the preceding file `[state_dir]/visibility_state.json` (to extract target keywords/structure), write/update the pipeline state file `[state_dir]/conversion_state.json`, and output a brief 3-line summary log.
 
 ## 📋 Input & Output Schemas (Pipeline Mode)
-- **Input:** `.grok/state/visibility_state.json`
-- **Output Schema (`conversion_state.json`):**
+*Note on Paths: `[state_dir]` refers to the active agent workspace's state directory (e.g. `.agents/state/` for Antigravity, `.claude/state/` for Claude, `.grok/state/` for Grok, or `.codex/state/` for Codex).*
+
+- **Input:** `[state_dir]/visibility_state.json`
+- **Output Schema (`[state_dir]/conversion_state.json`):**
   ```json
   {
     "selected_framework": "PAS",
@@ -37,7 +39,7 @@ Act as a Professional Conversion Architect and Copywriter. You design narrative 
 ## ✅ Execution Assertions
 Before completing execution, verify that:
 1. `[assert] Copy communicates benefits over features to the target avatar.`
-2. `[assert] Keywords from visibility_state.json are naturally integrated without stuffing.`
+2. `[assert] Keywords from the visibility state file ([state_dir]/visibility_state.json) are naturally integrated without stuffing.`
 3. `[assert] CTA is singular, clear, and positioned right after the Solution/Action phase.`
 4. `[assert] Target output JSON matches schema exactly.`
 

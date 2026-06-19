@@ -4,10 +4,12 @@
   "description": "A collaborative multi-agent framework for high-performance web development and conversion-centric landing pages.",
   "main": "scripts/install-skills.js",
   "bin": {
-    "pagesquad-skills": "./scripts/install-skills.js"
+    "pagesquad-skills": "./scripts/install-skills.js",
+    "pagesquad-orchestrate": "./scripts/orchestrate-build.js"
   },
   "scripts": {
-    "install": "node ./scripts/install-skills.js"
+    "install": "./scripts/install-skills.js",
+    "orchestrate": "./scripts/orchestrate-build.js"
   },
   "repository": {
     "type": "git",

@@ -60,11 +60,14 @@ To get started with the PageSquad AI Framework, you will need a supported agent 
 ### Zero-Clone Installation (Recommended) 🚀
 No need to clone the repository! Run the installer directly inside your target project folder:
 ```bash
-# Using npx
+# Using bunx (For Bun)
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local
+
+# Using npx (For Node)
 npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 
-# Using curl & node
-curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | node - --local
+# Using curl & bun / node
+curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
 ```
 *For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide.*
 
@@ -77,9 +80,16 @@ This framework can be used in two ways:
 1.  **Individual Activation:** Use an architect as a specialized consultant in **Isolated Mode** for a specific task.
 2.  **Orchestrated Workflow (A.C.E.S. Pipeline):** Run the automated pipeline orchestrator to sequence the development cycle sequentially from concept to analytics tags:
     ```bash
-    node scripts/orchestrate-build.js "Premium Fitness Brand landing page"
+    # Using bunx (remote execution without cloning)
+    bunx --bun git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness Brand"
+
+    # Using npx (remote execution without cloning)
+    npx -y --package=git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness Brand"
+
+    # Using bun run / npm run (local repository)
+    bun run orchestrate "Premium Fitness Brand"
     ```
-    This updates the state files under `.grok/state/*.json` programmatically.
+    This updates the state files under `[state_dir]/*.json` (e.g., `.agents/state/`) programmatically.
 
 *See the [USER_GUIDE.md](./USER_GUIDE.md) for detailed implementation instructions.*
 

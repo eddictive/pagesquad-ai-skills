@@ -190,6 +190,10 @@ async function installSkillsFor(clis, isGlobal) {
     const agDest = isGlobal ? targets.antigravity.global : targets.antigravity.local;
     console.log(`🤖 Deploying for Antigravity CLI -> ${agDest}`);
     ensureDir(agDest);
+    if (!isGlobal) {
+      ensureDir(path.join(userProjectDir, '.agents', 'state'));
+      console.log(`   📂 Pre-created local state directory: .agents/state/`);
+    }
     for (const arch of architects) {
       const src = path.join(srcDir, arch);
       const dest = path.join(agDest, arch);
@@ -204,6 +208,10 @@ async function installSkillsFor(clis, isGlobal) {
     const claudeDest = isGlobal ? targets.claude.global : targets.claude.local;
     console.log(`🧊 Deploying for Claude Code -> ${claudeDest}`);
     ensureDir(claudeDest);
+    if (!isGlobal) {
+      ensureDir(path.join(userProjectDir, '.claude', 'state'));
+      console.log(`   📂 Pre-created local state directory: .claude/state/`);
+    }
     for (const arch of architects) {
       const src = path.join(srcDir, arch);
       const dest = path.join(claudeDest, arch);
@@ -221,6 +229,8 @@ async function installSkillsFor(clis, isGlobal) {
       console.log(`💻 Configuring for OpenAI Codex CLI...`);
       const codexConfigDir = path.join(userProjectDir, '.codex');
       ensureDir(codexConfigDir);
+      ensureDir(path.join(userProjectDir, '.codex', 'state'));
+      console.log(`   📂 Pre-created local state directory: .codex/state/`);
 
       const configPath = path.join(codexConfigDir, 'config.toml');
       if (!fs.existsSync(configPath)) {
@@ -267,6 +277,8 @@ All code generation and content modifications must respect the specifications de
       console.log(`🧠 Configuring for Grok XAi CLI...`);
       const grokConfigDir = path.join(userProjectDir, '.grok');
       ensureDir(grokConfigDir);
+      ensureDir(path.join(userProjectDir, '.grok', 'state'));
+      console.log(`   📂 Pre-created local state directory: .grok/state/`);
 
       const grokMdPath = path.join(grokConfigDir, 'grok.md');
       const grokContent = `# Grok Architect Instructions 🧠

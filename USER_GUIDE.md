@@ -30,7 +30,7 @@ Grok CLI automatically processes instructions stored under `.grok/grok.md` and i
 
 ## 2. The Collaborative A.C.E.S. Workflow
 
-To build a full project collaboratively, the architects execute sequentially under the **A.C.E.S. Protocol**, automatically passing structured data using JSON files located in `.grok/state/` (or `.agents/state/`).
+To build a full project collaboratively, the architects execute sequentially under the **A.C.E.S. Protocol**, automatically passing structured data using JSON files located inside your active agent's workspace state folder `[state_dir]/` (e.g., `.agents/state/` for Antigravity, `.claude/state/` for Claude, `.grok/state/` for Grok, or `.codex/state/` for Codex).
 
 ### State Pipeline Map
 
@@ -50,7 +50,14 @@ To build a full project collaboratively, the architects execute sequentially und
 You can orchestrate and run the multi-agent pipeline simulation using the built-in runner:
 
 ```bash
-node scripts/orchestrate-build.js "Premium Fitness App Landing Page"
+# Using bun run (local repository)
+bun run orchestrate "Premium Fitness App Landing Page"
+
+# Using npm run (local repository)
+npm run orchestrate "Premium Fitness App Landing Page"
+
+# Using bunx (remote execution without cloning)
+bunx --bun git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness App Landing Page"
 ```
 
 This will run each agent in sequence, validating constraints with assertions, and outputting the following state results:

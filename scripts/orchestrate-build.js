@@ -10,8 +10,29 @@
 const fs = require('fs');
 const path = require('path');
 
-const rootDir = path.resolve(__dirname, '..');
-const stateDir = path.join(rootDir, '.grok', 'state');
+const userProjectDir = process.cwd();
+const args = process.argv.slice(2);
+
+// Dynamic state directory resolution or override via --state-dir
+let stateDir = '';
+const stateDirArgIndex = args.indexOf('--state-dir');
+
+if (stateDirArgIndex !== -1 && args[stateDirArgIndex + 1]) {
+  stateDir = path.resolve(args[stateDirArgIndex + 1]);
+} else {
+  // Scan for active CLI agent folders in the current working directory to align with state config
+  if (fs.existsSync(path.join(userProjectDir, '.agents'))) {
+    stateDir = path.join(userProjectDir, '.agents', 'state');
+  } else if (fs.existsSync(path.join(userProjectDir, '.claude'))) {
+    stateDir = path.join(userProjectDir, '.claude', 'state');
+  } else if (fs.existsSync(path.join(userProjectDir, '.grok'))) {
+    stateDir = path.join(userProjectDir, '.grok', 'state');
+  } else if (fs.existsSync(path.join(userProjectDir, '.codex'))) {
+    stateDir = path.join(userProjectDir, '.codex', 'state');
+  } else {
+    stateDir = path.join(userProjectDir, '.state'); // Universal fallback
+  }
+}
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) {
@@ -23,13 +44,13 @@ function writeState(filename, data) {
   ensureDir(stateDir);
   const filePath = path.join(stateDir, filename);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-  console.log(`   💾 Saved state: .grok/state/${filename}`);
+  console.log(`   💾 Saved state: ${path.relative(userProjectDir, filePath)}`);
 }
 
 function readState(filename) {
   const filePath = path.join(stateDir, filename);
   if (!fs.existsSync(filePath)) {
-    throw new Error(`State file missing: .grok/state/${filename}. Run the preceding architect first!`);
+    throw new Error(`State file missing: ${path.relative(userProjectDir, filePath)}. Run the preceding architect first!`);
   }
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -38,6 +59,7 @@ async function runPipeline(concept) {
   console.log(`====================================================`);
   console.log(`🏛️  A.C.E.S. Multi-Agent Pipeline Runner`);
   console.log(`Target Concept: "${concept}"`);
+  console.log(`State Directory: "${path.relative(userProjectDir, stateDir)}"`);
   console.log(`====================================================\n`);
 
   ensureDir(stateDir);
@@ -105,8 +127,8 @@ async function runPipeline(concept) {
     "visual_assets": {
       "hero_image_generation_prompt": `Cinematic studio photography of a glowing holographic 3D architecture model of a landing page on a developer dark slate desk, dynamic blue lighting, premium product showcase style, --ar 16:9`,
       "icon_sets": [
-        { "name": "Speed", "prompt": "Minimalist blue flash bolt icon, flat vector vector, transparent background" },
-        { "name": "Conversion", "prompt": "Minimalist gold graph growth arrow icon, flat vector, transparent background" }
+        { "name": "benefit1", "icon_style": "minimal outline", "prompt": "Minimalist blue flash bolt icon, flat vector vector, transparent background" },
+        { "name": "benefit2", "icon_style": "minimal outline", "prompt": "Minimalist gold graph growth arrow icon, flat vector, transparent background" }
       ]
     }
   };
@@ -177,9 +199,17 @@ async function runPipeline(concept) {
 
   console.log(`====================================================`);
   console.log(`🎉 Pipeline Execution Finished Successfully!`);
-  console.log(`All 6 JSON states generated and saved in .grok/state/`);
+  console.log(`All 6 JSON states generated and saved in: "${path.relative(userProjectDir, stateDir)}/"`);
   console.log(`====================================================`);
 }
 
-const targetConcept = process.argv[2] || "PageSquad AI Framework";
+let targetConcept = "PageSquad AI Framework";
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--state-dir') {
+    i++; // Skip the option value
+  } else if (!args[i].startsWith('--')) {
+    targetConcept = args[i];
+    break;
+  }
+}
 runPipeline(targetConcept);

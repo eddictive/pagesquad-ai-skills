@@ -13,33 +13,38 @@ We provide an interactive helper script to automate copying and linking the skil
 ### A. Zero-Clone Installation (Recommended) 🚀
 If you do not want to clone this repository, you can execute the installer directly from your project folder:
 
-#### Method 1: Using `npx` (Best for private/public repos)
+#### Method 1: Using `bunx` or `npx` (Best for private/public repos)
 ```bash
-# Install locally in your current project workspace
+# Install locally inside your project workspace (Bun)
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local
+
+# Install locally inside your project workspace (Node)
 npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 
-# Install globally in your user directory
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --global
+# Install globally in your home user scope (Bun)
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --global
 ```
 
-#### Method 2: Using `curl` & `node` (Standard pipeline)
+#### Method 2: Using `curl` (Standard shell pipeline)
 ```bash
-# Install locally in your current project workspace
-curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | node - --local
+# Install locally in your current project workspace (Bun)
+curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
 
-# Install globally in your user directory
-curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | node - --global
+# Install locally in your current project workspace (Node)
+curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | node - --local
 ```
 *Note: For private repositories, authenticate the curl command by adding `-H "Authorization: token YOUR_GITHUB_PAT"`.*
 
 ### B. Standard Installation (Cloned Repo)
 If you have already cloned the repository, navigate to the folder and run:
 ```bash
-# Interactive setup menu
+# Interactive setup menu (Bun or Node)
+bun scripts/install-skills.js
+# or
 node scripts/install-skills.js
 
 # Silent setup for all CLIs locally
-node scripts/install-skills.js --local --all
+bun scripts/install-skills.js --local --all
 ```
 
 #### Available Options / Flags:

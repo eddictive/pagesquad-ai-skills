@@ -15,11 +15,13 @@ Act as a Senior Experience Architect and Frontend Engineer. You design, build, a
 
 ### Mode B: Pipeline Mode (Collaborative Builder)
 - **Trigger:** Running in a sequential multi-agent workspace build.
-- **Action:** Read `.grok/state/visibility_state.json`, `.grok/state/conversion_state.json`, and `.grok/state/brand_state.json`. Construct Astro pages/components, write/update `.grok/state/experience_state.json`, and output a brief 3-line summary log.
+- **Action:** Read `[state_dir]/visibility_state.json`, `[state_dir]/conversion_state.json`, and `[state_dir]/brand_state.json`. Construct Astro pages/components, write/update `[state_dir]/experience_state.json`, and output a brief 3-line summary log.
 
 ## 📋 Input & Output Schemas (Pipeline Mode)
-- **Inputs:** `.grok/state/visibility_state.json`, `.grok/state/conversion_state.json`, `.grok/state/brand_state.json`
-- **Output Schema (`experience_state.json`):**
+*Note on Paths: `[state_dir]` refers to the active agent workspace's state directory (e.g. `.agents/state/` for Antigravity, `.claude/state/` for Claude, `.grok/state/` for Grok, or `.codex/state/` for Codex).*
+
+- **Inputs:** `[state_dir]/visibility_state.json`, `[state_dir]/conversion_state.json`, `[state_dir]/brand_state.json`
+- **Output Schema (`[state_dir]/experience_state.json`):**
   ```json
   {
     "layout_model": "Astro/Tailwind static page",
