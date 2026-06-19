@@ -1,0 +1,21 @@
+# Local Environment
+.env
+.env.*
+node_modules/
+.DS_Store
+
+# Skill Bundles (if you prefer to rebuild them)
+*.skill
+
+# Temporary Files
+AGENTS.md
+tmp/
+dist/
+build/
+.astro/
+.agents/
+.claude/
+.codex/
+.gemini/
+.grok/
+.skills/

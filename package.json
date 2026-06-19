@@ -1,0 +1,28 @@
+{
+  "name": "pagesquad-ai-skills",
+  "version": "1.0.0",
+  "description": "A collaborative multi-agent framework for high-performance web development and conversion-centric landing pages.",
+  "main": "scripts/install-skills.js",
+  "bin": {
+    "pagesquad-skills": "./scripts/install-skills.js"
+  },
+  "scripts": {
+    "install": "node ./scripts/install-skills.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddictive/pagesquad-ai-skills.git"
+  },
+  "keywords": [
+    "antigravity",
+    "grok",
+    "claude",
+    "codex",
+    "skills",
+    "agentic",
+    "landing page builder",
+    "ai page builder"
+  ],
+  "author": "",
+  "license": "ISC"
+}
