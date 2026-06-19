@@ -58,3 +58,14 @@ Under the **A.C.E.S. (Agentic Collaborative Execution & Synergy) Protocol**, the
 *   **Zero-Overhead Tokens:** Context window stuffing is eliminated through dynamic reference loading on demand.
 
 The "Architect" protocol ensures that these competing priorities are balanced through a formal, structured collaboration process.
+
+### Utility Scripts & Extensibility
+
+To extend the capabilities of the Architects beyond static text generation, the framework utilizes **Utility Scripts** located in the `skills/*/scripts/` directories. 
+
+These scripts provide the AI agents with executable tools to validate their work against real-world metrics. For example:
+*   **Visibility Architect:** Uses the `pagespeed-audit` script to query Google's PageSpeed Insights API, fetching live Core Web Vitals and SEO data.
+*   **Automation Architect:** Can use custom webhook-testing utilities to validate CRM connections.
+
+**Agent-Directed Execution:** 
+Scripts are designed specifically for LLM agents. They rely on environment variables (managed via a `.env` file) for API keys (e.g., `PAGESPEED_API_KEY`). If an agent attempts to run a script without the required key, the script fails gracefully with an `Agent Action Required` directive, prompting the agent to ask the human user for the missing credential before proceeding. This guarantees safe, autonomous API usage.
