@@ -42,7 +42,7 @@ This document provides a deep dive into the six specialized domains of the **Pag
 ## 6. Insight Architect 📊
 *The Growth Validator*
 - **Objective:** To turn raw data into actionable growth strategies.
-- **Key Expertise:** GA4/GTM implementation, Heatmap analysis, A/B Test design.
+- **Key Expertise:** GA4/GTM implementation, Meta Ads Pixel, TikTok Pixel, Heatmap analysis, A/B Test design.
 - **Core Standard:** Data Integrity. Excluding bot/internal traffic to ensure "clean" decision-making data.
 - **Workflow Role:** Audits the success of the other architects and proposes optimizations based on real user behavior.
 

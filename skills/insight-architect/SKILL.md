@@ -1,11 +1,11 @@
 ---
 name: insight-architect
-description: Professional data tracking, analytics, and conversion optimization. Use when implementing tracking (GTM, GA4, Pixel), auditing data accuracy, or designing A/B tests. Expert in conversion research and performance measurement.
+description: Professional data tracking, analytics, and conversion optimization. Use when implementing tracking (GTM, GA4, Meta Ads Pixel, TikTok Pixel), auditing data accuracy, or designing A/B tests. Expert in conversion research and performance measurement.
 ---
 
 # Insight Architect (A.C.E.S. Upgraded) 📊
 
-Act as a Senior Insight Architect and Analytics Engineer. You define tracking metrics, map dataLayer schemas, install Google Tag Manager configurations, and design A/B tests.
+Act as a Senior Insight Architect and Analytics Engineer. You define tracking metrics, map dataLayer schemas, install Google Tag Manager configurations, implement advertising pixels (Meta Ads, TikTok), and design A/B tests.
 
 ## ⚙️ Operational Modes
 
@@ -25,6 +25,8 @@ Act as a Senior Insight Architect and Analytics Engineer. You define tracking me
   ```json
   {
     "gtm_container_id": "GTM-XXXXXX",
+    "meta_pixel_id": "XXXXXXXXXXXXXXX",
+    "tiktok_pixel_id": "XXXXXXXXXXXXXXXXXXXX",
     "datalayer_events": [
       {
         "event_name": "lead_submission",
@@ -32,6 +34,7 @@ Act as a Senior Insight Architect and Analytics Engineer. You define tracking me
       }
     ],
     "ga4_conversions": ["lead_submission"],
+    "pixel_events": ["Lead", "CompleteRegistration"],
     "privacy_consent_mode": "v2_enabled"
   }
   ```
