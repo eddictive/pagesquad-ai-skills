@@ -12,12 +12,48 @@
 const https = require('https');
 
 const apiKey = process.env.PAGESPEED_API_KEY;
-const url = process.argv[2];
-const strategy = process.argv[3] || 'mobile';
+
+// Parse args: supports flags (--url X, --strategy=Y) and legacy positional args.
+const USAGE = 'Usage: node pagespeed-audit.js [--url <url>] [--strategy mobile|desktop]\nAlso accepted positionally: node pagespeed-audit.js <url> [strategy]';
+
+function parseArgs(argv) {
+  const opts = { url: null, strategy: null };
+  const positional = [];
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--url') {
+      opts.url = argv[++i];
+    } else if (arg.startsWith('--url=')) {
+      opts.url = arg.slice('--url='.length);
+    } else if (arg === '--strategy') {
+      opts.strategy = argv[++i];
+    } else if (arg.startsWith('--strategy=')) {
+      opts.strategy = arg.slice('--strategy='.length);
+    } else if (arg === '-h' || arg === '--help') {
+      console.log(USAGE);
+      process.exit(0);
+    } else if (arg.startsWith('-')) {
+      console.error(`Unknown option: ${arg}\n${USAGE}`);
+      process.exit(1);
+    } else {
+      positional.push(arg);
+    }
+  }
+  if (!opts.url && positional.length > 0) opts.url = positional[0];
+  if (!opts.strategy && positional.length > 1) opts.strategy = positional[1];
+  opts.strategy = (opts.strategy || 'mobile').toLowerCase();
+  if (!['mobile', 'desktop'].includes(opts.strategy)) {
+    console.error(`Invalid strategy: ${opts.strategy} (must be 'mobile' or 'desktop')`);
+    process.exit(1);
+  }
+  return opts;
+}
+
+const { url, strategy } = parseArgs(process.argv.slice(2));
 
 if (!url) {
-  console.error('Usage: PAGESPEED_API_KEY=<key> node pagespeed-audit.js <url> [strategy]');
-  console.error('Example: PAGESPEED_API_KEY=AIzaSy... node pagespeed-audit.js https://example.com desktop');
+  console.error(USAGE);
+  console.error('Example: PAGESPEED_API_KEY=AIzaSy... node pagespeed-audit.js --url https://example.com --strategy desktop');
   process.exit(1);
 }
 
