@@ -156,8 +156,6 @@ def main():
                 score = audit.get("score")
                 if score is None or score >= 0.9 or aid in EXCLUDE:
                     continue
-                if audit.get("scoreMode") not in ("binary", "metricSavings"):
-                    continue
                 failing.append({
                     "id": aid,
                     "score": score,

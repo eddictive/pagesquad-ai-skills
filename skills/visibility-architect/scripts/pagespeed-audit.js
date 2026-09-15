@@ -118,8 +118,7 @@ https.get(apiUrl, (res) => {
       const EXCLUDE = new Set(['metrics', 'screenshot-thumbnails', 'final-screenshot', 'timing', 'network-requests', 'network-rtt', 'network-server-latency', 'diagnostics', 'debug-data', 'stacks', 'errors-in-console', 'worker-timing', 'lcp-lazy-loaded', 'prioritize-lcp-image', 'uses-rel-preconnect', 'third-party-summary', 'first-contentful-paint', 'largest-contentful-paint', 'cumulative-layout-shift', 'total-blocking-time', 'speed-index', 'interactive']);
       const failing = [];
       for (const [id, audit] of Object.entries(audits)) {
-        if (audit.score === null || audit.score >= 0.9 || EXCLUDE.has(id)) continue;
-        if (audit.scoreMode !== 'binary' && audit.scoreMode !== 'metricSavings') continue;
+        if (audit.score === null || audit.score === undefined || audit.score >= 0.9 || EXCLUDE.has(id)) continue;
         const weight = Object.values(categories).some(c => c.auditRefs && c.auditRefs.some(r => r.id === id && r.weight > 0));
         failing.push({ id, score: audit.score, displayValue: audit.displayValue || '', weighted: weight, title: audit.title || id });
       }

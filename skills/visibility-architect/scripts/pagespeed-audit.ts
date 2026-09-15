@@ -120,7 +120,6 @@ try {
   const failing: { id: string; score: number; displayValue: string; weighted: boolean }[] = [];
   for (const [id, audit] of Object.entries(audits) as [string, any][]) {
     if (audit.score === null || audit.score === undefined || audit.score >= 0.9 || EXCLUDE.has(id)) continue;
-    if (audit.scoreMode !== 'binary' && audit.scoreMode !== 'metricSavings') continue;
     const weighted = Object.values(categories).some((c: any) => c.auditRefs && c.auditRefs.some((r: any) => r.id === id && r.weight > 0));
     failing.push({ id, score: audit.score, displayValue: audit.displayValue || '', weighted });
   }
