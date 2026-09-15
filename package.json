@@ -1,6 +1,6 @@
 {
   "name": "pagesquad-ai-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A collaborative multi-agent framework for high-performance web development and conversion-centric landing pages.",
   "main": "scripts/install-skills.js",
   "bin": {
