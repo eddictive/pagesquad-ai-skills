@@ -19,3 +19,6 @@ build/
 .gemini/
 .grok/
 .skills/
+
+# Audit Reports (local only)
+report/
