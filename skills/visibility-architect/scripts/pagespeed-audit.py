@@ -15,6 +15,49 @@ import urllib.request
 import urllib.parse
 import json
 
+# Remediation guide: audit id -> concise, actionable fix instruction.
+FIXES = {
+    # Accessibility
+    "color-contrast": "Ensure text/background contrast >= 4.5:1 (3:1 for large text). Darken light-gray text (e.g. #a4a4a4 -> #767676) and avoid white text on light backgrounds. Verify with a WCAG contrast checker.",
+    "link-name": "Add accessible names to icon/image-only links: aria-label=\"Facebook Nakhla Tour\" or visually-hidden text inside the <a>.",
+    "heading-order": "Do not skip heading levels. Wrap page content in one H1, then H2 > H3 > H4 in order; use CSS classes for visual sizing instead of jumping tags.",
+    "link-in-text-block": "Make inline links distinguishable: add underline, bold weight, or >= 3:1 color contrast versus surrounding text.",
+    "image-aspect-ratio": "Set width/height attributes on <img> matching the intrinsic aspect ratio, or CSS aspect-ratio, so the browser reserves correct space.",
+    "unsized-images": "Add explicit width and height attributes (or CSS aspect-ratio) to every <img> to prevent layout shifts.",
+    "button-name": "Add aria-label or inner text to icon-only buttons.",
+    "document-title": "Add a descriptive <title> to the page.",
+    "html-has-lang": "Set lang attribute on <html> (e.g. lang=\"id\").",
+    "tap-targets": "Make touch targets at least 48x48 CSS px with 8px spacing between them.",
+    # Performance diagnostics
+    "image-delivery-insight": "Serve images in WebP/AVIF, right-sized to display dimensions (srcset/sizes), compressed, and lazy-loaded below the fold. If behind Cloudflare, enable Polish + WebP.",
+    "cache-insight": "Serve versioned static assets (/assets/*) with Cache-Control: public, max-age=31536000, immutable.",
+    "unused-javascript": "Remove or defer unused JS: code-split bundles, tree-shake, or dynamically import non-critical modules (carousels, modals).",
+    "unused-css-rules": "Purge unused CSS rules per page or remove blocking stylesheets not used above the fold.",
+    "render-blocking-insight": "Inline critical CSS in <head> and defer the rest (media=\"print\" onload pattern), or reduce blocking stylesheet count.",
+    "render-blocking-resources": "Inline critical CSS; defer non-critical stylesheets and scripts (defer/async).",
+    "font-display-insight": "Add font-display: swap to @font-face declarations and preload primary font files.",
+    "font-display": "Add font-display: swap (or optional) to @font-face rules.",
+    "legacy-javascript-insight": "Raise the JS build target (drop ES5 polyfills/transforms for modern browsers), or serve legacy bundles only via nomodule.",
+    "legacy-javascript": "Update build targets to ES2017+ and split legacy bundles behind nomodule.",
+    "forced-reflow-insight": "Batch DOM reads before writes; avoid repeated style reads interleaved with style writes (layout thrashing).",
+    "network-dependency-tree-insight": "Shorten the critical request chain: preconnect to third-party origins, self-host critical fonts/CSS, combine small files.",
+    "third-party-summary": "Audit third-party scripts; defer non-essential ones and remove duplicates.",
+    "modern-image-formats": "Convert JPEG/PNG to WebP or AVIF (<picture> element or CDN auto-negotiation).",
+    "uses-optimized-images": "Compress images (lossy quality ~80) before upload or via CDN transforms.",
+    "offscreen-images": "Add loading=\"lazy\" to below-the-fold images; never lazy-load the LCP/hero image.",
+    "uses-responsive-images": "Provide multiple sizes via srcset + sizes so mobile devices do not download desktop-sized images.",
+    "uses-long-cache-ttl": "Add long Cache-Control max-age with immutable to fingerprinted static assets.",
+    "prioritize-lcp-image": "Preload the LCP image: <link rel=\"preload\" as=\"image\" fetchpriority=\"high\"> and avoid lazy-loading it.",
+    "uses-rel-preconnect": "Add <link rel=\"preconnect\"> for critical third-party origins (CDN, font hosts).",
+    "redirects": "Eliminate redirect chains; link directly to the final URL.",
+    "total-byte-weight": "Reduce page weight: smaller images, fewer fonts, trim payloads.",
+    "duplicated-javascript": "Dedupe shared modules into a common chunk instead of bundling them per-page.",
+    # Best practices
+    "errors-in-console": "Fix runtime errors reported in the browser console.",
+    "no-vulnerable-libraries": "Upgrade JS dependencies with known CVEs.",
+    "csp-xss": "Add a Content-Security-Policy header to mitigate XSS.",
+}
+
 def parse_args(argv):
     """Parse args: supports flags (--url X, --strategy=Y) and legacy positional args."""
     usage = (
@@ -168,6 +211,9 @@ def main():
                 for f in failing[:15]:
                     tag = " [core-weighted]" if f["weighted"] else ""
                     print(f"- {f['id']}: {f['displayValue'] or 'failed'}{tag}")
+                    fix = FIXES.get(f["id"])
+                    if fix:
+                        print(f"  -> Fix: {fix}")
 
             # Savings opportunities (bytes/ms estimates)
             SAVINGS = [
@@ -185,6 +231,9 @@ def main():
                 print("\nSavings Opportunities:")
                 for o in opportunities:
                     print(f"- {o['id']}: {o.get('displayValue') or 'see report'}")
+                    fix = FIXES.get(o["id"])
+                    if fix:
+                        print(f"  -> Fix: {fix}")
             print("------------------------------------------\n")
 
             scores = [s for s in (perf_score, seo_score, a11y_score, bp_score) if s is not None]
