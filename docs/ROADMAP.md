@@ -40,11 +40,25 @@ Roadmap pengembangan skill PageSquad AI. Satu bagian per audit/plan, terbaru di 
 |---|---|---|---|---|
 | 1 | Perluas SKILL.md: scaffold blueprint, naming convention, island decision tree, form→automation wiring | 0.5 hari | ⭐⭐⭐⭐⭐ | ✅ Done (2026-09-16) |
 | 2 | Upgrade schema `experience_state.json`: + `form_fields`, `tracking_hooks`, `output_path` | 1 jam | ⭐⭐⭐⭐⭐ | ✅ Done (2026-09-16) |
-| 3 | Update `astro_patterns.md`: astro:assets, Actions, View Transitions, Tailwind v4 `@theme` | 2 jam | ⭐⭐⭐⭐ | ⬜ Backlog |
-| 4 | Utility script: `init-astro-project` + `verify-build` (js/ts/py) | 0.5 hari | ⭐⭐⭐⭐ | ⬜ Backlog |
-| 5 | Putuskan DaisyUI vs Shadcn per use case + dokumentasi trade-off | 30 mnt | ⭐⭐⭐ | ⬜ Backlog |
-| 6 | Assertion verifiable: run build & report bundle size / island count | 1 jam | ⭐⭐⭐ | ⬜ Backlog |
-| 7 | Mode C: Remediate (audit findings → fixed code) | 2 jam | ⭐⭐⭐ | ⬜ Backlog |
+| 3 | Update `astro_patterns.md`: astro:assets, Actions, View Transitions, Tailwind v4 `@theme` | 2 jam | ⭐⭐⭐⭐ | ✅ Done (2026-09-16) |
+| 4 | Utility script: `init-astro-project` + `verify-build` (js/ts/py) | 0.5 hari | ⭐⭐⭐⭐ | ✅ Done (2026-09-16) |
+| 5 | Putuskan DaisyUI vs Shadcn per use case + dokumentasi trade-off | 30 mnt | ⭐⭐⭐ | ✅ Done (2026-09-16) |
+| 6 | Assertion verifiable: run build & report bundle size / island count | 1 jam | ⭐⭐⭐ | ✅ Done (2026-09-16) |
+| 7 | Mode C: Remediate (audit findings → fixed code) | 2 jam | ⭐⭐⭐ | ✅ Done (2026-09-16) |
+
+### Detail Implementasi #3–#7
+
+**#3 — `astro_patterns.md` rewrite**: `astro:assets` (`<Image>`/`<Picture>` dengan srcset, width/height enforced), Astro Actions untuk form (server logic + zod validation tanpa island), ClientRouter View Transitions, sitemap integration, kontrak field name dengan Automation Architect.
+
+**#4 — Utility scripts**:
+- `scripts/init-astro-project.sh` — scaffold struktur standar (8 direktori, `global.css` dengan `@theme` tokens, `BaseLayout.astro`, `types.ts`); idempotent; opsi `--skip-install` untuk project existing; deteksi bun/npm otomatis.
+- `scripts/verify-build.{js,ts,py}` — 4 checks: build exit code, total client JS ≤ budget (default 50 KiB), island count ≤ max (default 3), raw `<img>` punya width/height. Output PASS/FAIL per check + exit code untuk orchestrator. Teruji 3 skenario (over-budget FAIL → partial FAIL → all-PASS) di ketiga varian.
+
+**#5 — `tailwind_components.md`**: decision table 3 kolom (vanilla utilities default / DaisyUI untuk widget static / Shadcn hanya dalam React island kompleks) + larangan campur library dalam satu project.
+
+**#6 — Assertion #3 kini executable**: assertion merujuk `verify-build` script; hasil wajib direkam di `build_verification` state.
+
+**#7 — Mode C: Remediate**: menerima audit findings (mis. PageSpeed failing audits) → map ke fix berdasarkan 4 kategori prioritas (a11y → image delivery → JS/CSS waste → caching), output per-finding table (finding → file → fix), re-run verification untuk before/after, larangan fix yang men-regress metric lain.
 
 ### Detail Implementasi #1 & #2
 
@@ -78,3 +92,4 @@ Roadmap pengembangan skill PageSquad AI. Satu bagian per audit/plan, terbaru di 
 ## Log
 
 - 2026-09-16: Audit Experience Architect; implementasi plan #1 (SKILL.md expansion) & #2 (schema upgrade). Roadmap doc dibuat.
+- 2026-09-16: Backlog #3–#7 selesai — astro_patterns + tailwind_components rewrite, utility scripts (init-astro-project.sh, verify-build js/ts/py), Mode C Remediate, assertion executable. Semua item action plan Done.
