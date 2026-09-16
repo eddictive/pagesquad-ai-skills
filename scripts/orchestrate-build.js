@@ -140,7 +140,20 @@ async function runPipeline(concept) {
   const brandState = readState('brand_state.json');
   const experienceOutput = {
     "layout_model": "Astro islands static page",
-    "components_compiled": ["Header.astro", "Hero.astro", "PASSection.astro", "CtaBanner.astro", "Footer.astro"],
+    "output_path": "src/pages/index.astro",
+    "components_compiled": ["BaseLayout.astro", "Header.astro", "Hero.astro", "PASSection.astro", "CtaBanner.astro", "Footer.astro"],
+    "form_fields": [
+      { "name": "full_name", "type": "text", "required": true, "label": "Nama Lengkap" },
+      { "name": "email", "type": "email", "required": true, "label": "Email" },
+      { "name": "phone", "type": "tel", "required": false, "label": "Nomor WhatsApp" }
+    ],
+    "tracking_hooks": [
+      { "element": "#lead-form", "event": "lead_submission", "location": "cta_banner" },
+      { "element": "#cta-hero-btn", "event": "cta_click", "location": "hero" }
+    ],
+    "islands_used": [
+      { "component": "LeadForm.tsx", "directive": "client:visible" }
+    ],
     "styling_mappings": {
       "tailwind_color_classes": {
         "primary": `text-[${brandState.color_system.primary}]`,
@@ -149,24 +162,29 @@ async function runPipeline(concept) {
       },
       "fonts_applied": [brandState.typography.header_font, brandState.typography.body_font]
     },
+    "build_verification": {
+      "passed": true,
+      "command": "bun run build",
+      "notes": "Simulated orchestrator run — single island, static-first layout"
+    },
     "accessibility_status": "WCAG_AA_Validated"
   };
   writeState('experience_state.json', experienceOutput);
-  console.log(`   ✅ [Experience] Completed. Frontend layout structure compiled with Tailwind mapping classes.\n`);
+  console.log(`   ✅ [Experience] Completed. Frontend layout compiled with Tailwind mapping, form fields, and tracking hooks.\n`);
 
   // 5. AUTOMATION ARCHITECT
   console.log(`⚙️ [Step 5] Invoking Automation Architect...`);
   const expState = readState('experience_state.json');
+  const crmFieldMap = {};
+  for (const field of expState.form_fields) {
+    crmFieldMap[field.name] = field.name === 'full_name' ? 'first_name' : field.name;
+  }
   const automationOutput = {
     "target_crm": "HubSpot",
     "form_mappings": {
       "submit_url": "https://api.pagesquad.ai/v1/leads",
-      "fields": {
-        "lead_name": "first_name",
-        "lead_email": "email",
-        "lead_phone": "phone",
-        "lead_source": "landing_page_ces"
-      }
+      "fields": crmFieldMap,
+      "lead_source": "landing_page_ces"
     },
     "nurturing_sequence": {
       "email_subject": "Welcome to the future of Agentic Web Design! 🏛️",
@@ -175,27 +193,28 @@ async function runPipeline(concept) {
     "response_sla": "Instant (under 5 minutes)"
   };
   writeState('automation_state.json', automationOutput);
-  console.log(`   ✅ [Automation] Completed. HubSpot lead mappings and automated first-touch sequences configured.\n`);
+  console.log(`   ✅ [Automation] Completed. HubSpot lead mappings (from experience form_fields) and automated first-touch sequences configured.\n`);
 
   // 6. INSIGHT ARCHITECT
   console.log(`📊 [Step 6] Invoking Insight Architect...`);
   const autoState = readState('automation_state.json');
+  const expStateForInsight = readState('experience_state.json');
+  const datalayerEvents = expStateForInsight.tracking_hooks.map(hook => ({
+    "event_name": hook.event,
+    "parameters": {
+      "element": hook.element,
+      "location": hook.location,
+      "crm_target": autoState.target_crm
+    }
+  }));
   const insightOutput = {
     "gtm_container_id": "GTM-PQSQUAD",
-    "datalayer_events": [
-      {
-        "event_name": "lead_submission",
-        "parameters": {
-          "crm_target": autoState.target_crm,
-          "cta_text": "Deploy Your AI Squad Now"
-        }
-      }
-    ],
-    "ga4_conversions": ["lead_submission"],
+    "datalayer_events": datalayerEvents,
+    "ga4_conversions": datalayerEvents.map(e => e.event_name).filter(e => e !== 'cta_click'),
     "privacy_consent_mode": "v2_enabled"
   };
   writeState('insight_state.json', insightOutput);
-  console.log(`   ✅ [Insight] Completed. Analytics tracking, GTM dataLayer scripts, and GA4 variables configured.\n`);
+  console.log(`   ✅ [Insight] Completed. dataLayer events derived from experience tracking_hooks; GTM and GA4 conversions configured.\n`);
 
   console.log(`====================================================`);
   console.log(`🎉 Pipeline Execution Finished Successfully!`);
