@@ -180,20 +180,26 @@ async function runPipeline(concept) {
     crmFieldMap[field.name] = field.name === 'full_name' ? 'first_name' : field.name;
   }
   const automationOutput = {
-    "target_crm": "HubSpot",
+    "capture_method": "whatsapp_redirect",
+    "target_crm": "Google Sheets",
     "form_mappings": {
-      "submit_url": "https://api.pagesquad.ai/v1/leads",
+      "submit_url": "https://script.google.com/macros/s/DEPLOY-YOUR-APPS-SCRIPT/exec",
+      "whatsapp_number": "6281234567890",
       "fields": crmFieldMap,
       "lead_source": "landing_page_ces"
+    },
+    "whatsapp_redirect": {
+      "message_template": `Halo Admin,\nSaya {{full_name}} tertarik dengan penawaran Anda.\nNo. WA saya: {{phone}}.\nMohon info lebih lanjut. Terima kasih.`,
+      "open_target": "_blank"
     },
     "nurturing_sequence": {
       "email_subject": "Welcome to the future of Agentic Web Design! 🏛️",
       "whatsapp_first_touch_template": `Hey {{first_name}}, this is the PageSquad AI Automation Architect. We've received your request. Let's build together!`
     },
-    "response_sla": "Instant (under 5 minutes)"
+    "response_sla": "Instant (WhatsApp redirect opens chat immediately; sheet row appended in parallel)"
   };
   writeState('automation_state.json', automationOutput);
-  console.log(`   ✅ [Automation] Completed. HubSpot lead mappings (from experience form_fields) and automated first-touch sequences configured.\n`);
+  console.log(`   ✅ [Automation] Completed. Capture method whatsapp_redirect + sheet logging; field mappings derived from experience form_fields.\n`);
 
   // 6. INSIGHT ARCHITECT
   console.log(`📊 [Step 6] Invoking Insight Architect...`);

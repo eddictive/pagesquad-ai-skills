@@ -93,3 +93,33 @@ Roadmap pengembangan skill PageSquad AI. Satu bagian per audit/plan, terbaru di 
 
 - 2026-09-16: Audit Experience Architect; implementasi plan #1 (SKILL.md expansion) & #2 (schema upgrade). Roadmap doc dibuat.
 - 2026-09-16: Backlog #3–#7 selesai — astro_patterns + tailwind_components rewrite, utility scripts (init-astro-project.sh, verify-build js/ts/py), Mode C Remediate, assertion executable. Semua item action plan Done.
+
+---
+
+## Automation Architect Upgrade — 2026-09-16
+
+**Sumber:** Audit user-driven — skill hanya mendukung HubSpot webhook; market Indonesia butuh chat-first capture
+**Referensi nyata:** https://lp.kotanabi.com/konsultasi/ (reverse-engineered: Astro + React island, dual-submit WhatsApp redirect + Google Apps Script sheet logging + dataLayer event)
+
+### Temuan
+
+1. **Capture method tunggal & enterprise-heavy** — schema hanya kenal `target_crm: HubSpot` + REST webhook; tidak ada jalur gratis/chat-first
+2. **Referensi WhatsApp hanya API resmi Meta** (approval template, biaya) — overkill untuk UMKM; tidak ada pola `wa.me` deep-link gratis
+3. **Tidak ada logging murah** — Google Sheet via Apps Script tidak tercover (padahal pola umum SMB Indonesia)
+
+### Implementasi
+
+- **Lead Capture Decision Tree** di SKILL.md: `whatsapp_redirect` (default market chat-first) → `google_script_sheet` → `crm_webhook` → `middleware`
+- **Schema upgrade**: `capture_method`, `form_mappings.whatsapp_number` (E.164 tanpa +), `whatsapp_redirect.message_template` dengan token `{{field}}`, `target_crm` boleh `"Google Sheets"` / `null`
+- **Reference baru** `lead_capture_methods.md`: kode client-side WhatsApp redirect, pola dual-submit KotaNabi, Apps Script `doPost` + setup steps, Google Forms embed alternative, tabel perbandingan 6 metode
+- **Assertions diperkuat**: field mapping vs `experience_state.json → form_fields`, format nomor E.164, dataLayer event wajib per submit path
+- **Orchestrator**: Automation step kini output capture_method whatsapp_redirect + sheet logging default (Indonesia-market), field mapping tetap derived dari experience form_fields
+
+### Action Plan
+
+| # | Aksi | Status |
+|---|---|---|
+| 1 | Decision tree + schema upgrade (SKILL.md) | ✅ Done |
+| 2 | Reference lead_capture_methods.md (kode konkret) | ✅ Done |
+| 3 | Orchestrator sync | ✅ Done |
+| 4 | Tambah utility script (mis. wa-link-builder) | ⬜ Backlog |
