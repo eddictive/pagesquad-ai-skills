@@ -36,6 +36,10 @@ This will:
 2. Generate `AGENTS.md` (for Codex) and `.grok/grok.md` (for Grok).
 3. Pre-create state directories for collaborative pipeline runs.
 
+> **Tip:** After installation, copy `.env-example` to `.env` and fill in your
+> Google API credentials (`GOOGLE_API_KEY`, `GOOGLE_OAUTH_TOKEN`, or
+> `GOOGLE_SERVICE_ACCOUNT_JSON`) so utility scripts work out of the box.
+
 ---
 
 ## Install for a Specific Agent

@@ -71,7 +71,7 @@ curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/
 *For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide or the step-by-step [AGENTIC_SETUP.md](./AGENTIC_SETUP.md) for specific agent instructions.*
 
 ### Environment Variables
-Utility scripts (e.g. `pagespeed-audit`, `create-lead-sheet`) require Google API credentials stored in a `.env` file. See [INSTALLATION.md](./INSTALLATION.md#environment-variables) for setup details.
+Utility scripts (e.g. `pagespeed-audit`, `create-lead-sheet`) require Google API credentials stored in a `.env` file. Supported variables: `GOOGLE_API_KEY` (PageSpeed), `GOOGLE_OAUTH_TOKEN` (Sheets/Apps Script), and `GOOGLE_SERVICE_ACCOUNT_JSON` (auto-mints OAuth tokens). See [INSTALLATION.md](./INSTALLATION.md#environment-variables) for setup details.
 
 ---
 
