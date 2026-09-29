@@ -10,7 +10,7 @@ Identifying the "Where" and "Why" behind user drop-offs.
 ## 2. Qualitative Analysis (Heatmaps & Recordings)
 Tools: Microsoft Clarity, Hotjar.
 - **Click Maps**: Are users clicking non-clickable elements?
-- **Scroll Maps**: Where do most users stop reading? (Adjust `experience-architect` layout based on this).
+- **Scroll Maps**: Where do most users stop reading? (Adjust `pagesquad-experience-architect` layout based on this).
 - **Rage Clicks**: Identify broken UI or confusing UX.
 - **Session Recordings**: Watch the "last 10 non-converters" to see where they got stuck.
 

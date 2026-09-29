@@ -1,5 +1,5 @@
 ---
-name: visibility-architect
+name: pagesquad-visibility-architect
 description: Professional SEO and GEO (Generative Engine Optimization) audit and strategy. Use for on-page SEO, technical SEO, and AI generative optimization. Expert in Google Search guidelines, performance architecture, and AI-visibility criteria.
 ---
 

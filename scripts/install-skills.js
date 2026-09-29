@@ -42,12 +42,12 @@ if (!isLocalSource) {
 }
 
 const architects = [
-  'visibility-architect',
-  'conversion-architect',
-  'brand-architect',
-  'experience-architect',
-  'automation-architect',
-  'insight-architect'
+  'pagesquad-visibility-architect',
+  'pagesquad-conversion-architect',
+  'pagesquad-brand-architect',
+  'pagesquad-experience-architect',
+  'pagesquad-automation-architect',
+  'pagesquad-insight-architect'
 ];
 
 // Target Paths
@@ -245,12 +245,12 @@ This file registers the active AI Architect guidelines for the OpenAI Codex CLI.
 
 ## Active Architects
 
-*   **Visibility Architect:** Focuses on SEO/GEO & semantic structure. Guided by [SKILL.md](file://./skills/visibility-architect/SKILL.md).
-*   **Conversion Architect:** Focuses on PAS/AIDA copywriting and sales psychology. Guided by [SKILL.md](file://./skills/conversion-architect/SKILL.md).
-*   **Brand Architect:** Focuses on visual styles, typography, and image generation. Guided by [SKILL.md](file://./skills/brand-architect/SKILL.md).
-*   **Experience Architect:** Focuses on Astro JS & Tailwind CSS component layouts. Guided by [SKILL.md](file://./skills/experience-architect/SKILL.md).
-*   **Automation Architect:** Focuses on CRMs, webhooks, and the 5-Minute response SLA. Guided by [SKILL.md](file://./skills/automation-architect/SKILL.md).
-*   **Insight Architect:** Focuses on GTM, GA4, heatmaps, and A/B test analytics. Guided by [SKILL.md](file://./skills/insight-architect/SKILL.md).
+*   **Visibility Architect:** Focuses on SEO/GEO & semantic structure. Guided by [SKILL.md](file://./skills/pagesquad-visibility-architect/SKILL.md).
+*   **Conversion Architect:** Focuses on PAS/AIDA copywriting and sales psychology. Guided by [SKILL.md](file://./skills/pagesquad-conversion-architect/SKILL.md).
+*   **Brand Architect:** Focuses on visual styles, typography, and image generation. Guided by [SKILL.md](file://./skills/pagesquad-brand-architect/SKILL.md).
+*   **Experience Architect:** Focuses on Astro JS & Tailwind CSS component layouts. Guided by [SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
+*   **Automation Architect:** Focuses on CRMs, webhooks, and the 5-Minute response SLA. Guided by [SKILL.md](file://./skills/pagesquad-automation-architect/SKILL.md).
+*   **Insight Architect:** Focuses on GTM, GA4, heatmaps, and A/B test analytics. Guided by [SKILL.md](file://./skills/pagesquad-insight-architect/SKILL.md).
 
 ## Operational Standards
 All code generation and content modifications must respect the specifications detailed under the respective \`SKILL.md\` and \`references/\` directories.
@@ -287,12 +287,12 @@ This file defines the project instructions for the Grok XAi CLI.
 
 ## Available Specialized Skills
 
-*   **Visibility Architect:** Focuses on SEO, GEO, and semantic clustering. Setup in [skills/visibility-architect/SKILL.md](file://./skills/visibility-architect/SKILL.md).
-*   **Conversion Architect:** Focuses on PAS/AIDA copywriting and CRO strategy. Setup in [skills/conversion-architect/SKILL.md](file://./skills/conversion-architect/SKILL.md).
-*   **Brand Architect:** Focuses on color identity, typography, and visual assets. Setup in [skills/brand-architect/SKILL.md](file://./skills/brand-architect/SKILL.md).
-*   **Experience Architect:** Focuses on Astro JS, Tailwind CSS, and UX layouts. Setup in [skills/experience-architect/SKILL.md](file://./skills/experience-architect/SKILL.md).
-*   **Automation Architect:** Focuses on Webhooks, CRM integrations, and response SLA. Setup in [skills/automation-architect/SKILL.md](file://./skills/automation-architect/SKILL.md).
-*   **Insight Architect:** Focuses on Google Tag Manager, GA4, and A/B audits. Setup in [skills/insight-architect/SKILL.md](file://./skills/insight-architect/SKILL.md).
+*   **Visibility Architect:** Focuses on SEO, GEO, and semantic clustering. Setup in [skills/pagesquad-visibility-architect/SKILL.md](file://./skills/pagesquad-visibility-architect/SKILL.md).
+*   **Conversion Architect:** Focuses on PAS/AIDA copywriting and CRO strategy. Setup in [skills/pagesquad-conversion-architect/SKILL.md](file://./skills/pagesquad-conversion-architect/SKILL.md).
+*   **Brand Architect:** Focuses on color identity, typography, and visual assets. Setup in [skills/pagesquad-brand-architect/SKILL.md](file://./skills/pagesquad-brand-architect/SKILL.md).
+*   **Experience Architect:** Focuses on Astro JS, Tailwind CSS, and UX layouts. Setup in [skills/pagesquad-experience-architect/SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
+*   **Automation Architect:** Focuses on Webhooks, CRM integrations, and response SLA. Setup in [skills/pagesquad-automation-architect/SKILL.md](file://./skills/pagesquad-automation-architect/SKILL.md).
+*   **Insight Architect:** Focuses on Google Tag Manager, GA4, and A/B audits. Setup in [skills/pagesquad-insight-architect/SKILL.md](file://./skills/pagesquad-insight-architect/SKILL.md).
 
 ## Usage Standard
 When asked to act as one of these architects, read and apply the standards, rules, and reference files specified in the corresponding folder.

@@ -1,5 +1,5 @@
 ---
-name: automation-architect
+name: pagesquad-automation-architect
 description: Professional business automation, CRM integration, and lead nurturing. Use when connecting landing pages to CRMs (HubSpot, Salesforce), capturing leads via WhatsApp redirect, Google Form/Apps Script spreadsheet logging, or webhooks, and setting up lead-scoring workflows. Expert in post-conversion systems, with Indonesia-market chat-first capture patterns.
 ---
 

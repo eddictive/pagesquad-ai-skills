@@ -9,12 +9,12 @@ There are four primary ways to interact with these skills depending on your CLI:
 ### A. Antigravity CLI (Explicit Prefix `@`)
 Invoke the skills directly using the `@` symbol. Antigravity will load the specific architect context:
 **Prompt Example:**
-> "@experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "@pagesquad-experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ### B. Claude Code CLI (Slash Command `/`)
 Use the slash command automatically created from the skill folder name:
 **Prompt Example:**
-> "/experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "/pagesquad-experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ### C. OpenAI Codex CLI (Direct Context in `AGENTS.md`)
 Because the workspace has `AGENTS.md` loaded in Codex CLI, Codex automatically knows the rules. Simply reference the architect role in your prompts:

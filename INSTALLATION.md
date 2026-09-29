@@ -78,7 +78,7 @@ agy inspect
 
 ### Invoking Skills
 - **Explicit Invocations:** Prepend the prompt with `@` followed by the skill's name:
-  > "@visibility-architect audit the SEO hierarchy of this page."
+  > "@pagesquad-visibility-architect audit the SEO hierarchy of this page."
 - **Semantic Auto-Matching:** Based on your prompt content, Antigravity parses the description metadata in the `SKILL.md` frontmatter and injects the instructions automatically if they are relevant.
 - **Inspect Loaded Skills:** Type `/skills` in the Antigravity TUI console to see currently registered skills.
 
@@ -100,7 +100,7 @@ npm install -g @anthropic-ai/claude-code
 
 ### Invoking Skills
 - **Slash Commands:** The frontmatter of the skill definitions automatically creates custom slash commands. Use them directly:
-  > `/visibility-architect audit my on-page markup`
+  > `/pagesquad-visibility-architect audit my on-page markup`
 - **Always-on Instructions:** For persistent coding standards, you can link rules into `CLAUDE.md` at the project root.
 
 ---
@@ -117,7 +117,7 @@ Follow official setup instructions for the Codex CLI tools.
 - **Workflow configuration:** Mapped in the `.codex/config.toml` project file.
 
 ### Invoking Skills
-- The `AGENTS.md` file created by the installer acts as a lookup for all six architects. Codex will automatically scan this file and apply the guidelines from [SKILL.md](file://./skills/visibility-architect/SKILL.md) matching your target workflow.
+- The `AGENTS.md` file created by the installer acts as a lookup for all six architects. Codex will automatically scan this file and apply the guidelines from [SKILL.md](file://./skills/pagesquad-visibility-architect/SKILL.md) matching your target workflow.
 
 ---
 
@@ -150,10 +150,10 @@ If using other tools, point them directly to the `SKILL.md` files:
 
 - **Aider:**
   ```bash
-  aider --read skills/visibility-architect/SKILL.md
+  aider --read skills/pagesquad-visibility-architect/SKILL.md
   ```
 - **GitHub Copilot / Cursor:** Reference files using `@` or `#` symbols:
-  > "Using #skills/brand-architect/SKILL.md generate color scheme options."
+  > "Using #skills/pagesquad-brand-architect/SKILL.md generate color scheme options."
 
 ---
 

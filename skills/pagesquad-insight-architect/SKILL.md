@@ -1,5 +1,5 @@
 ---
-name: insight-architect
+name: pagesquad-insight-architect
 description: Professional data tracking, analytics, and conversion optimization. Use when implementing tracking (GTM, GA4, Meta Ads Pixel, TikTok Pixel), auditing data accuracy, or designing A/B tests. Expert in conversion research and performance measurement.
 ---
 

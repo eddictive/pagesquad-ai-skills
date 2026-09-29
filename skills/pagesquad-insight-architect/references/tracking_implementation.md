@@ -26,7 +26,7 @@ The "Brain" of the tracking setup.
 - **TikTok Pixel Helper**: Use the Chrome extension to verify that the Pixel is firing and events are correctly identified.
 
 ## 5. Data Layer Specifications
-Provide these to the `experience-architect` for implementation:
+Provide these to the `pagesquad-experience-architect` for implementation:
 ```javascript
 window.dataLayer = window.dataLayer || [];
 window.dataLayer.push({

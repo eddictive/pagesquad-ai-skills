@@ -1,5 +1,5 @@
 ---
-name: conversion-architect
+name: pagesquad-conversion-architect
 description: Professional copywriting and conversion strategy. Use when you need to write high-converting landing pages, ads, email sequences, or articles using proven NLP, sales psychology, and "architectural" content structuring.
 ---
 

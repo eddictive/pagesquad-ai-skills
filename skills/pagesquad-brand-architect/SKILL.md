@@ -1,5 +1,5 @@
 ---
-name: brand-architect
+name: pagesquad-brand-architect
 description: Professional visual identity, creative direction, and brand strategy. Use when designing brand guidelines, generating AI assets (images, icons), or creating high-trust visual layouts. Expert in color psychology, typography, and premium aesthetic standards.
 ---
 

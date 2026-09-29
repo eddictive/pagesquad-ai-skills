@@ -1,5 +1,5 @@
 ---
-name: experience-architect
+name: pagesquad-experience-architect
 description: Professional web development, UI/UX audit & design, and layout architecture. Use when building, auditing, or optimizing digital experiences using modern stacks (Astro, Tailwind). Expert in Nielsen's heuristics, visual hierarchy, and performance architecture.
 ---
 

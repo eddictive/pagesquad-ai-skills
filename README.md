@@ -40,9 +40,8 @@ This isn't just a list of prompts. This is a **structured procedural framework**
 
 ```text
 skills/
-├── [architect-name]/
+├── pagesquad-[architect-name]/
 │   ├── SKILL.md             # Core instructions & A.C.E.S. operational schemas
-│   ├── [name].skill         # Packaged skill module
 │   ├── references/          # Checklists and technical deep-dives (on-demand hydration)
 │   ├── scripts/             # Local tools and automation
 │   └── assets/              # Reusable media/templates
@@ -69,7 +68,7 @@ npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 # Using curl & bun / node
 curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
 ```
-*For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide.*
+*For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide or the step-by-step [AGENTIC_SETUP.md](./AGENTIC_SETUP.md) for specific agent instructions.*
 
 ---
 
