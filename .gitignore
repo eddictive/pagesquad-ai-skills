@@ -3,6 +3,7 @@
 .env.*
 node_modules/
 .DS_Store
+.credentials/
 
 # Skill Bundles (if you prefer to rebuild them)
 *.skill
