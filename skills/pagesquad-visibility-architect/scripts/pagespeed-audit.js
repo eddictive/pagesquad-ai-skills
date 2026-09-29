@@ -4,14 +4,14 @@
  * PageSpeed Audit Utility (Node.js)
  * Helps the Visibility Architect audit core web vitals and SEO performance.
  * 
- * Usage: PAGESPEED_API_KEY=<your_api_key> node pagespeed-audit.js <url> [strategy: mobile|desktop]
+ * Usage: GOOGLE_API_KEY=<your_api_key> node pagespeed-audit.js <url> [strategy: mobile|desktop]
  * 
  * Note for AI Agents: If the API key is missing, ask the user to provide it or check the .env file.
  */
 
 const https = require('https');
 
-const apiKey = process.env.PAGESPEED_API_KEY;
+const apiKey = process.env.GOOGLE_API_KEY;
 
 // Parse args: supports flags (--url X, --strategy=Y) and legacy positional args.
 const USAGE = 'Usage: node pagespeed-audit.js [--url <url>] [--strategy mobile|desktop]\nAlso accepted positionally: node pagespeed-audit.js <url> [strategy]';
@@ -53,12 +53,12 @@ const { url, strategy } = parseArgs(process.argv.slice(2));
 
 if (!url) {
   console.error(USAGE);
-  console.error('Example: PAGESPEED_API_KEY=AIzaSy... node pagespeed-audit.js --url https://example.com --strategy desktop');
+  console.error('Example: GOOGLE_API_KEY=AIzaSy... node pagespeed-audit.js --url https://example.com --strategy desktop');
   process.exit(1);
 }
 
 if (!apiKey) {
-  console.error('Error: PAGESPEED_API_KEY environment variable is missing.');
+  console.error('Error: GOOGLE_API_KEY environment variable is missing.');
   console.error('Agent Action Required: Please ask the user to provide their Google PageSpeed API key, or read it from a .env file, then rerun the command with the key.');
   process.exit(1);
 }

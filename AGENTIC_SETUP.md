@@ -240,7 +240,8 @@ cp .env-example .env
 
 | Variable | Used By | Purpose |
 | :--- | :--- | :--- |
-| `PAGESPEED_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit script |
+| `GOOGLE_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit script (shared with other Google APIs) |
+| `GOOGLE_OAUTH_TOKEN` | pagesquad-automation-architect | OAuth2 access token for Google Sheets/Apps Script API (create-lead-sheet script) |
 
 All other variables are optional placeholders documented in `.env-example`.
 
@@ -261,7 +262,8 @@ All other variables are optional placeholders documented in `.env-example`.
 | :--- | :--- |
 | Skills don't appear in `/skills` (Antigravity) | Run the installer with `--local --antigravity` from your project root. |
 | Codex ignores `AGENTS.md` | Ensure the file is at the workspace root, not nested. |
-| `pagespeed-audit` script returns 403 | Add `PAGESPEED_API_KEY` to `.env` in your project root. |
+| `pagespeed-audit` script returns 403 | Add `GOOGLE_API_KEY` to `.env` in your project root. |
+| `create-lead-sheet` fails with 401/403 | Ensure `GOOGLE_OAUTH_TOKEN` is set in `.env`; the token must have `https://www.googleapis.com/auth/script.projects` and `https://www.googleapis.com/auth/spreadsheets` scopes. |
 | Old skill directories linger | Manually delete the non-prefixed folders (e.g. `visibility-architect/`) from your agent config, then re-run the installer. |
 
 ---

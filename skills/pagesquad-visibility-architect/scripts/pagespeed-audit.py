@@ -4,7 +4,7 @@
 PageSpeed Audit Utility (Python)
 Helps the Visibility Architect audit core web vitals and SEO performance.
 
-Usage: PAGESPEED_API_KEY=<your_api_key> python pagespeed-audit.py <url> [strategy: mobile|desktop]
+Usage: GOOGLE_API_KEY=<your_api_key> python pagespeed-audit.py <url> [strategy: mobile|desktop]
 
 Note for AI Agents: If the API key is missing, ask the user to provide it or check the .env file.
 """
@@ -103,13 +103,13 @@ def main():
     url, strategy = parse_args(sys.argv[1:])
 
     if not url:
-        print("Usage: PAGESPEED_API_KEY=<key> python pagespeed-audit.py [--url <url>] [--strategy mobile|desktop]")
-        print("Example: PAGESPEED_API_KEY=AIzaSy... python pagespeed-audit.py --url https://example.com --strategy desktop")
+        print("Usage: GOOGLE_API_KEY=<key> python pagespeed-audit.py [--url <url>] [--strategy mobile|desktop]")
+        print("Example: GOOGLE_API_KEY=AIzaSy... python pagespeed-audit.py --url https://example.com --strategy desktop")
         sys.exit(1)
 
-    api_key = os.environ.get("PAGESPEED_API_KEY")
+    api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        print("Error: PAGESPEED_API_KEY environment variable is missing.", file=sys.stderr)
+        print("Error: GOOGLE_API_KEY environment variable is missing.", file=sys.stderr)
         print("Agent Action Required: Please ask the user to provide their Google PageSpeed API key, or read it from a .env file, then rerun the command with the key.", file=sys.stderr)
         sys.exit(1)
 

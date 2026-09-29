@@ -13,6 +13,8 @@ tmp/
 dist/
 build/
 .astro/
+__pycache__/
+*.pyc
 .agents/
 .claude/
 .codex/

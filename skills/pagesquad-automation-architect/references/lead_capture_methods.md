@@ -63,7 +63,11 @@ async function onSubmit(e) {
 
 Free CRM-lite: every submit appends a row to a Google Sheet.
 
-### Setup (one-time, manual — document these steps for the user)
+### Setup
+
+Two options are available:
+
+#### Option A: Manual setup (one-time)
 
 1. Create a Google Sheet with header row matching your payload keys (`timestamp`, `name`, `phone`, `source`, `message`).
 2. Extensions → Apps Script, paste the script below, replace `SHEET_NAME`.
@@ -83,6 +87,66 @@ function doPost(e) {
 - Always POST with `mode: 'no-cors'` — Apps Script responses lack CORS headers, so `fetch` resolves opaque; treat it as fire-and-forget and never block the UX on it.
 - Payload keys must match the sheet header row exactly.
 - Optional hardening: append a shared secret token and check `e.parameter.token` in `doPost`.
+
+#### Option B: Programmatic setup (auto-create via script)
+
+Skip the manual steps entirely. The Automation Architect can auto-provision the
+entire sheet + web-app stack with a single utility script that calls the
+Google Sheets API and Apps Script API directly.
+
+**Prerequisites:** a Google OAuth2 access token with the scopes
+`script.projects`, `script.deployments`, `script.scriptapp`, `spreadsheets`,
+and `drive`. Store it as `GOOGLE_OAUTH_TOKEN` in your `.env` file. Obtain it
+with:
+
+```bash
+gcloud auth application-default login
+```
+
+**Run the script** (Node.js or Python — both ship in `scripts/`):
+
+```bash
+# Node.js
+GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
+  node scripts/create-lead-sheet.js --name "Acme Leads" --sheet "Leads"
+
+# Python
+GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
+  python3 scripts/create-lead-sheet.py --name "Acme Leads" --sheet "Leads"
+```
+
+The script will:
+
+1. **Create a Google Spreadsheet** — titled `Acme Leads` with a `Leads` tab and
+   the header row (`timestamp`, `name`, `phone`, `source`, `message`) pre-filled.
+2. **Create an Apps Script project** — with a `Code.gs` file containing the
+   `doPost(e)` handler that appends each POSTed form payload as a new row.
+3. **Deploy as a web app** — configured for `executeAs: USER` / `access: EVERYONE`
+   so the landing-page form can POST directly without auth.
+4. **Print the web-app URL** — copy this into `form_mappings.submit_url` in your
+   `automation_state.json`.
+
+```
+✅ Spreadsheet created: https://docs.google.com/spreadsheets/d/1BxiMVs0X.../edit
+✅ Apps Script project created: 1BxiMVs0X...
+   📜 Script code uploaded (Code.gs + manifest)
+   🏷️  Version created: 1
+   🚀 Deployed as web app: https://script.google.com/macros/s/XXXX/exec
+========================================
+🎉 Lead capture sheet deployed successfully!
+========================================
+Web App URL:     https://script.google.com/macros/s/XXXX/exec
+Use this URL as form_mappings.submit_url in automation_state.json.
+```
+
+The deployed Apps Script reads the spreadsheet ID at deploy time and writes to it
+via `SpreadsheetApp.openById()`, so the connection is baked into the script — no
+manual copy-paste of IDs needed.
+
+> **Note for AI Agents:** If `GOOGLE_OAUTH_TOKEN` is missing, the script fails
+> with an `Agent Action Required` directive. Ask the user to authenticate with
+> `gcloud auth application-default login` and provide the token, or read it from
+> `.env`, then rerun.
 
 ## 3. CRM Webhook (`crm_webhook`)
 
@@ -106,7 +170,8 @@ When no developer touching the page is possible: embed a Google Form (`<iframe s
 | Method | Cost | Backend | Response speed | Best for |
 |---|---|---|---|---|
 | `whatsapp_redirect` | Free | None | Instant (chat opens) | Chat-first markets (ID), SMBs |
-| `google_script_sheet` | Free | Apps Script | Sheet instantly; reply manual | Lead logging without CRM |
+| `google_script_sheet` (manual) | Free | Apps Script | Sheet instantly; reply manual | Lead logging without CRM |
+| `google_script_sheet` (auto) | Free | Apps Script (auto-provisioned) | Sheet instantly; reply manual | Zero-touch setup, agentic deployment |
 | WA redirect + sheet (KotaNabi) | Free | Apps Script | Instant chat + logged | Best of both — recommended ID default |
 | `crm_webhook` | CRM cost | Server route | Instant + assignment rules | Teams with real CRM |
 | `middleware` | Zapier/Make cost | Third-party | Minutes | No-code teams, multi-fan-out |
