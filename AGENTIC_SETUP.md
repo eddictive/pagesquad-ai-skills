@@ -230,20 +230,73 @@ npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --global --other
 
 ## Environment Variables
 
-Several utility scripts require API keys. Copy `.env-example` to `.env` and
-fill in your credentials:
+Several utility scripts require Google Cloud credentials. Copy `.env-example` to
+`.env` and fill in your credentials:
 
 ```bash
 cp .env-example .env
-# Then edit .env with your keys
 ```
 
 | Variable | Used By | Purpose |
 | :--- | :--- | :--- |
-| `GOOGLE_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit script (shared with other Google APIs) |
-| `GOOGLE_OAUTH_TOKEN` | pagesquad-automation-architect | OAuth2 access token for Google Sheets/Apps Script API (create-lead-sheet script) |
+| `GOOGLE_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit script (API key, shared across Google APIs on the same project) |
+| `GOOGLE_OAUTH_TOKEN` | pagesquad-automation-architect | OAuth2 access token for Google Sheets + Apps Script API (create-lead-sheet script) |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | pagesquad-automation-architect | *(Optional)* Path to or inline JSON of a service account key — auto-mints an OAuth2 token |
 
-All other variables are optional placeholders documented in `.env-example`.
+### Obtaining `GOOGLE_API_KEY`
+
+Create or reuse a Google Cloud project with the **PageSpeed Insights API**
+enabled, then create an API key:
+
+```bash
+# Google Cloud Console → APIs & Services → Credentials → Create API key
+cp .env-example .env
+# Edit .env and paste your key after GOOGLE_API_KEY=
+```
+
+### Obtaining `GOOGLE_OAUTH_TOKEN` (for create-lead-sheet)
+
+The `create-lead-sheet` script needs an OAuth2 bearer token with write access
+to Sheets and Apps Script APIs. Three methods work — pick one:
+
+**Method 1 — gcloud (recommended for interactive use):**
+
+```bash
+gcloud auth application-default login
+gcloud auth application-default print-access-token
+# Then set it in .env:
+echo "GOOGLE_OAUTH_TOKEN=$(gcloud auth application-default print-access-token)" >> .env
+```
+
+**Method 2 — Service Account (recommended for automated/agentic use):**
+
+1. Go to [Google Cloud Console → Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
+2. Create a service account and grant it the **Editor** role (or fine-grained roles: `roles/script.admin`, `roles/spreadsheets.admin`, `roles/drive.admin`)
+3. Create and download a JSON key file
+4. Enable the script in your shell:
+
+```bash
+export GOOGLE_SERVICE_ACCOUNT_JSON=/path/to/your-service-account-key.json
+node skills/pagesquad-automation-architect/scripts/create-lead-sheet.js --name "Acme Leads"
+```
+
+The script automatically mints a JWT, exchanges it for an access token, and
+calls the Sheets + Apps Script APIs. No pre-obtained token needed.
+
+**Method 3 — OAuth2 Playground (one-off):** Visit
+[Google OAuth2 Playground](https://developers.google.com/oauthplayground), select
+all five scopes listed in the script header, and copy the resulting token into
+`.env`.
+
+### Required scopes
+
+```
+https://www.googleapis.com/auth/script.projects
+https://www.googleapis.com/auth/script.deployments
+https://www.googleapis.com/auth/script.scriptapp
+https://www.googleapis.com/auth/spreadsheets
+https://www.googleapis.com/auth/drive
+```
 
 ---
 
@@ -263,7 +316,7 @@ All other variables are optional placeholders documented in `.env-example`.
 | Skills don't appear in `/skills` (Antigravity) | Run the installer with `--local --antigravity` from your project root. |
 | Codex ignores `AGENTS.md` | Ensure the file is at the workspace root, not nested. |
 | `pagespeed-audit` script returns 403 | Add `GOOGLE_API_KEY` to `.env` in your project root. |
-| `create-lead-sheet` fails with 401/403 | Ensure `GOOGLE_OAUTH_TOKEN` is set in `.env`; the token must have `https://www.googleapis.com/auth/script.projects` and `https://www.googleapis.com/auth/spreadsheets` scopes. |
+| `create-lead-sheet` fails with 401/403 | Ensure `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON` is set in `.env`; the token must have `https://www.googleapis.com/auth/script.projects` and `https://www.googleapis.com/auth/spreadsheets` scopes. |
 | Old skill directories linger | Manually delete the non-prefixed folders (e.g. `visibility-architect/`) from your agent config, then re-run the installer. |
 
 ---

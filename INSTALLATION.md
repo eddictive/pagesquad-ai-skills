@@ -203,14 +203,19 @@ deterministic, token-free tasks:
 | Script | Architect | Runtime | Purpose |
 | :--- | :--- | :--- | :--- |
 | `pagespeed-audit.{js,ts,py}` | pagesquad-visibility-architect | Node / Bun / Python | Fetch Core Web Vitals & SEO data from PageSpeed Insights API. Requires `GOOGLE_API_KEY`. |
-| `create-lead-sheet.{js,py}` | pagesquad-automation-architect | Node / Python | Auto-create a Google Sheet + deploy an Apps Script web app for lead capture. Requires `GOOGLE_OAUTH_TOKEN`. |
+| `create-lead-sheet.{js,ts,py}` | pagesquad-automation-architect | Node / Bun / Python | Auto-create a Google Sheet + deploy an Apps Script web app for lead capture. Requires `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON`. |
 | `init-astro-project.sh` | pagesquad-experience-architect | Shell (Bash) | Scaffold a standard Astro + Tailwind v4 project structure. Idempotent. |
 | `verify-build.{js,ts,py}` | pagesquad-experience-architect | Node / Bun / Python | Verify build output: exit code, bundle size budget, island count, image dimensions. |
 
 ```bash
-# Example: auto-create a lead capture sheet
+# Example: auto-create a lead capture sheet (OAuth token)
 GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
   node skills/pagesquad-automation-architect/scripts/create-lead-sheet.js \
+  --name "Acme Leads" --sheet "Leads"
+
+# Example: auto-create a lead capture sheet (service account)
+GOOGLE_SERVICE_ACCOUNT_JSON=$(grep GOOGLE_SERVICE_ACCOUNT_JSON .env | cut -d= -f2-) \
+  bun skills/pagesquad-automation-architect/scripts/create-lead-sheet.ts \
   --name "Acme Leads" --sheet "Leads"
 ```
 

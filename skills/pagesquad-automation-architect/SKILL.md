@@ -76,7 +76,13 @@ Before completing execution, verify that:
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails:
-- `references/lead_capture_methods.md` — when building any capture method
+- `references/lead_capture_methods.md` — when building any capture method (includes programmatic Google Sheet + Apps Script provisioning)
 - `references/crm_integrations.md` — CRM webhook specifics
 - `references/whatsapp_automation.md` — WhatsApp Business API, templates, follow-up logic
 - `references/lead_scoring_nurture.md` — scoring and nurture sequences
+
+## 🛠️ Utility Scripts
+The `scripts/` directory provides deterministic tools for common automation tasks:
+- **`create-lead-sheet.js` / `create-lead-sheet.py` / `create-lead-sheet.ts`** — Auto-provisions a Google Sheet with a `Leads` tab and deploys an Apps Script web app that appends form POSTs as rows. Supports `GOOGLE_OAUTH_TOKEN` (direct) or `GOOGLE_SERVICE_ACCOUNT_JSON` (auto-minted JWT) for authentication. Run when the `submit_url` needs to be generated programmatically (e.g., new client onboarding or sandbox environments).
+  - *Note:* Requires `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON` in `.env`. If missing, the script fails with an `Agent Action Required` directive. See [AGENTIC_SETUP.md](./../AGENTIC_SETUP.md#environment-variables) for setup instructions.
+- **`crm_integrations.md`** — reference guide for HubSpot, Salesforce, and other webhook endpoints.

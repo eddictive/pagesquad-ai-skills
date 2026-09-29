@@ -96,19 +96,27 @@ Google Sheets API and Apps Script API directly.
 
 **Prerequisites:** a Google OAuth2 access token with the scopes
 `script.projects`, `script.deployments`, `script.scriptapp`, `spreadsheets`,
-and `drive`. Store it as `GOOGLE_OAUTH_TOKEN` in your `.env` file. Obtain it
-with:
+and `drive`. Two authentication methods are supported:
+
+- **OAuth2 token** — store as `GOOGLE_OAUTH_TOKEN` in `.env`. Obtain it with:
+  ```bash
+  gcloud auth application-default login
+  gcloud auth application-default print-access-token
+  ```
+- **Service account JSON** (recommended for automated/agentic use) — store as
+  `GOOGLE_SERVICE_ACCOUNT_JSON` (inline JSON or path to key file). The script
+  auto-mints a JWT and exchanges it for a token — no pre-obtained token needed.
+
+**Run the script** (Node.js, Bun/TypeScript, or Python — all ship in `scripts/`):
 
 ```bash
-gcloud auth application-default login
-```
-
-**Run the script** (Node.js or Python — both ship in `scripts/`):
-
-```bash
-# Node.js
+# Node.js (OAuth token)
 GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
   node scripts/create-lead-sheet.js --name "Acme Leads" --sheet "Leads"
+
+# Node.js via Bun/TypeScript (service account)
+GOOGLE_SERVICE_ACCOUNT_JSON=$(grep GOOGLE_SERVICE_ACCOUNT_JSON .env | cut -d= -f2-) \
+  bun scripts/create-lead-sheet.ts --name "Acme Leads" --sheet "Leads"
 
 # Python
 GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
@@ -143,10 +151,11 @@ The deployed Apps Script reads the spreadsheet ID at deploy time and writes to i
 via `SpreadsheetApp.openById()`, so the connection is baked into the script — no
 manual copy-paste of IDs needed.
 
-> **Note for AI Agents:** If `GOOGLE_OAUTH_TOKEN` is missing, the script fails
-> with an `Agent Action Required` directive. Ask the user to authenticate with
-> `gcloud auth application-default login` and provide the token, or read it from
-> `.env`, then rerun.
+> **Note for AI Agents:** The script supports `GOOGLE_OAUTH_TOKEN` (direct
+> token) or `GOOGLE_SERVICE_ACCOUNT_JSON` (auto-mints JWT). If both are missing,
+> it falls back to `gcloud auth application-default print-access-token`.
+> If all methods fail, the script exits with an `Agent Action Required` directive
+> — ask the user to authenticate and provide credentials, then rerun.
 
 ## 3. CRM Webhook (`crm_webhook`)
 
