@@ -31,7 +31,7 @@ This isn't just a list of prompts. This is a **structured procedural framework**
 - **A.C.E.S. Orchestrator:** Sequential, automated build simulation via `node scripts/orchestrate-build.js`.
 - **GEO (Generative Engine Optimization):** Built-in strategies for the "AI-Search" era (crawlers & citations).
 - **Islands Architecture:** Optimized for Astro JS and high Core Web Vitals.
-- **Automation-First:** Native support for the "5-Minute Rule" in lead response.
+- **Automation-First:** Native support for the "5-Minute Rule" in lead response, including programmatic Google Sheet + Apps Script web-app provisioning via `create-lead-sheet` scripts.
 - **Inter-Agent Protocol:** Programmatic state mapping variables.
 
 ---
@@ -69,6 +69,9 @@ npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
 ```
 *For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide or the step-by-step [AGENTIC_SETUP.md](./AGENTIC_SETUP.md) for specific agent instructions.*
+
+### Environment Variables
+Utility scripts (e.g. `pagespeed-audit`, `create-lead-sheet`) require Google API credentials stored in a `.env` file. See [INSTALLATION.md](./INSTALLATION.md#environment-variables) for setup details.
 
 ---
 

@@ -76,6 +76,23 @@ This will run each agent in sequence, validating constraints with assertions, an
 - **Isolated vs Pipeline Mode:** Use **Isolated Mode** (standard chat commands) when auditing existing code. Use **Pipeline Mode** (structured runner) when generating new funnels from scratch.
 - **Strict Self-Validation:** Never ignore `[assert]` failures. Check the assertion matrix printed by each architect to ensure no design/SEO leaks occur.
 - **Dynamic Reference Hydration:** Keep your agent fast and minimize token usage by only requesting reference folder lookups (e.g., `references/google_guidelines.md`) when solving a failed assertion.
+- **Utility Scripts:** Each architect ships deterministic utility scripts under `skills/pagesquad-*/scripts/`. The Automation Architect's `create-lead-sheet.{js,py}` can auto-provision a Google Sheet + Apps Script web app — just set `GOOGLE_OAUTH_TOKEN` in your `.env` and run it. See [INSTALLATION.md](./INSTALLATION.md#utility-scripts) for the full script catalog.
+
+---
+
+## 5. Environment Variables
+
+Utility scripts rely on environment variables (managed via a `.env` file) for API credentials:
+
+| Variable | Used By | Purpose |
+| :--- | :--- | :--- |
+| `GOOGLE_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit script |
+| `GOOGLE_OAUTH_TOKEN` | pagesquad-automation-architect | Google Sheets + Apps Script API for `create-lead-sheet` |
+
+```bash
+cp .env-example .env
+# Then edit .env with your credentials
+```
 
 ---
 

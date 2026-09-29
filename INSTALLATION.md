@@ -59,6 +59,44 @@ bun scripts/install-skills.js --local --all
 
 ---
 
+## 🔐 Environment Variables
+
+Several utility scripts require Google Cloud API credentials. Copy `.env-example`
+to `.env` in your project root and fill in the values:
+
+```bash
+cp .env-example .env
+```
+
+| Variable | Used By | Purpose |
+| :--- | :--- | :--- |
+| `GOOGLE_API_KEY` | pagesquad-visibility-architect | PageSpeed Insights audit (`pagespeed-audit.{js,ts,py}`). A single project-level key shared across Google APIs when enabled on the same Cloud project. |
+| `GOOGLE_OAUTH_TOKEN` | pagesquad-automation-architect | OAuth2 access token for the `create-lead-sheet` script — creates Google Sheets and deploys Apps Script web apps via API. |
+
+### Obtaining credentials
+
+**`GOOGLE_API_KEY`** — create or reuse a Google Cloud project with the PageSpeed
+Insights API enabled, then create an API key:
+
+```bash
+# Visit the Google Cloud Console → APIs & Services → Credentials → Create API key
+cp .env-example .env
+# Edit .env and paste your key after GOOGLE_API_KEY=
+```
+
+**`GOOGLE_OAUTH_TOKEN`** — obtain a user OAuth2 bearer token with the required scopes:
+
+```bash
+gcloud auth application-default login
+# Or extract a token from your Google Cloud project:
+gcloud auth application-default print-access-token
+```
+
+Scopes needed for `create-lead-sheet`: `script.projects`, `script.deployments`,
+`script.scriptapp`, `spreadsheets`, `drive`.
+
+---
+
 ## 1. Antigravity CLI (Mandatory Migration) 🚀
 
 The **Antigravity CLI** automatically indexes skills, supports semantic matches, and allows explicit keyword invoking.
@@ -157,4 +195,26 @@ If using other tools, point them directly to the `SKILL.md` files:
 
 ---
 
+## 🛠️ Utility Scripts
+
+Each architect ships utility scripts in `skills/pagesquad-*/scripts/` to perform
+deterministic, token-free tasks:
+
+| Script | Architect | Runtime | Purpose |
+| :--- | :--- | :--- | :--- |
+| `pagespeed-audit.{js,ts,py}` | pagesquad-visibility-architect | Node / Bun / Python | Fetch Core Web Vitals & SEO data from PageSpeed Insights API. Requires `GOOGLE_API_KEY`. |
+| `create-lead-sheet.{js,py}` | pagesquad-automation-architect | Node / Python | Auto-create a Google Sheet + deploy an Apps Script web app for lead capture. Requires `GOOGLE_OAUTH_TOKEN`. |
+| `init-astro-project.sh` | pagesquad-experience-architect | Shell (Bash) | Scaffold a standard Astro + Tailwind v4 project structure. Idempotent. |
+| `verify-build.{js,ts,py}` | pagesquad-experience-architect | Node / Bun / Python | Verify build output: exit code, bundle size budget, island count, image dimensions. |
+
+```bash
+# Example: auto-create a lead capture sheet
+GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
+  node skills/pagesquad-automation-architect/scripts/create-lead-sheet.js \
+  --name "Acme Leads" --sheet "Leads"
+```
+
+---
+
 *Looking for the specific architect roles? See the [SKILLS_OVERVIEW.md](./SKILLS_OVERVIEW.md).*
+*Need a step-by-step agent-by-agent setup guide? See [AGENTIC_SETUP.md](./AGENTIC_SETUP.md).*
