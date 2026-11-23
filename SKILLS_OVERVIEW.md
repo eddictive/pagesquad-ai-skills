@@ -28,7 +28,7 @@ This document provides a deep dive into the six specialized domains of the **Pag
 ## 4. Experience Architect 💻
 *The Technical Lead*
 - **Objective:** To build frictionless, lightning-fast digital interfaces.
-- **Key Expertise:** Astro JS, Tailwind CSS, UI/UX Heuristics, Core Web Vitals.
+- **Key Expertise:** Astro 7 (SSG, per-route SSR, server output), Svelte 5 islands, Tailwind CSS v4, UI/UX heuristics, Core Web Vitals.
 - **Core Standard:** **Mobile-First & Static-First**. Prioritizing speed and accessibility (WCAG AA).
 - **Workflow Role:** Transforms copy and assets into a functional, high-performance web application.
 

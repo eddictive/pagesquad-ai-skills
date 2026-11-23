@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * PageSquad AI Installer
@@ -30,7 +30,7 @@ try {
     isLocalSource = true;
   }
 } catch (e) {
-  // __dirname might not be defined when piped into node
+  // __dirname might not be defined when the file is piped into bun
 }
 
 if (!isLocalSource) {
@@ -239,16 +239,25 @@ async function installSkillsFor(clis, isGlobal) {
       }
 
       const agentsMdPath = path.join(userProjectDir, 'AGENTS.md');
+      const existingAgents = fs.existsSync(agentsMdPath) ? fs.readFileSync(agentsMdPath, 'utf8') : '';
+      if (existingAgents.includes('pagesquad-skills-repo')) {
+        console.log(`   ⏭️  Left existing AGENTS.md untouched (pagesquad-skills-repo marker).`);
+      } else {
       const agentsContent = `# Project Agents & Guidelines (Codex CLI) 🤖
 
 This file registers the active AI Architect guidelines for the OpenAI Codex CLI.
+
+Generated sites use **Astro 7** (latest patch), **Svelte 5** islands, and **Tailwind CSS v4**.
+Run PageSquad scripts with **Bun** (\`bun <file>.ts\`). Do not use Node for those scripts.
+Security rules: the Experience Architect's \`references/security_guidelines.md\`.
+Lighthouse Performance 100: \`references/core_web_vitals.md\`.
 
 ## Active Architects
 
 *   **Visibility Architect:** Focuses on SEO/GEO & semantic structure. Guided by [SKILL.md](file://./skills/pagesquad-visibility-architect/SKILL.md).
 *   **Conversion Architect:** Focuses on PAS/AIDA copywriting and sales psychology. Guided by [SKILL.md](file://./skills/pagesquad-conversion-architect/SKILL.md).
 *   **Brand Architect:** Focuses on visual styles, typography, and image generation. Guided by [SKILL.md](file://./skills/pagesquad-brand-architect/SKILL.md).
-*   **Experience Architect:** Focuses on Astro JS & Tailwind CSS component layouts. Guided by [SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
+*   **Experience Architect:** Focuses on Astro 7, Svelte 5, and Tailwind CSS v4. Guided by [SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
 *   **Automation Architect:** Focuses on CRMs, webhooks, and the 5-Minute response SLA. Guided by [SKILL.md](file://./skills/pagesquad-automation-architect/SKILL.md).
 *   **Insight Architect:** Focuses on GTM, GA4, heatmaps, and A/B test analytics. Guided by [SKILL.md](file://./skills/pagesquad-insight-architect/SKILL.md).
 
@@ -257,6 +266,7 @@ All code generation and content modifications must respect the specifications de
 `;
       fs.writeFileSync(agentsMdPath, agentsContent, 'utf8');
       console.log(`   ✅ Created/Updated root AGENTS.md`);
+      }
     }
   }
 
@@ -290,7 +300,7 @@ This file defines the project instructions for the Grok XAi CLI.
 *   **Visibility Architect:** Focuses on SEO, GEO, and semantic clustering. Setup in [skills/pagesquad-visibility-architect/SKILL.md](file://./skills/pagesquad-visibility-architect/SKILL.md).
 *   **Conversion Architect:** Focuses on PAS/AIDA copywriting and CRO strategy. Setup in [skills/pagesquad-conversion-architect/SKILL.md](file://./skills/pagesquad-conversion-architect/SKILL.md).
 *   **Brand Architect:** Focuses on color identity, typography, and visual assets. Setup in [skills/pagesquad-brand-architect/SKILL.md](file://./skills/pagesquad-brand-architect/SKILL.md).
-*   **Experience Architect:** Focuses on Astro JS, Tailwind CSS, and UX layouts. Setup in [skills/pagesquad-experience-architect/SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
+*   **Experience Architect:** Focuses on Astro 7, Svelte 5, Tailwind CSS v4, and UX layouts. Setup in [skills/pagesquad-experience-architect/SKILL.md](file://./skills/pagesquad-experience-architect/SKILL.md).
 *   **Automation Architect:** Focuses on Webhooks, CRM integrations, and response SLA. Setup in [skills/pagesquad-automation-architect/SKILL.md](file://./skills/pagesquad-automation-architect/SKILL.md).
 *   **Insight Architect:** Focuses on Google Tag Manager, GA4, and A/B audits. Setup in [skills/pagesquad-insight-architect/SKILL.md](file://./skills/pagesquad-insight-architect/SKILL.md).
 
@@ -372,7 +382,7 @@ const args = process.argv.slice(2);
 
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`🏛️  PageSquad AI Installer`);
-  console.log(`Usage: node install-skills.js [options]`);
+  console.log(`Usage: bun install-skills.js [options]`);
   console.log(`\nOptions:`);
   console.log(`  --local          Install locally in workspace (default)`);
   console.log(`  --global         Install globally in home directory`);

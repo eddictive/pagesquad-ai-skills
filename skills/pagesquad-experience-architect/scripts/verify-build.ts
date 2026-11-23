@@ -77,7 +77,7 @@ function main() {
       console.error('Error: no package.json in cwd. Run from the project root or pass --skip-build.');
       process.exit(1);
     }
-    const runner = fs.existsSync('bun.lockb') || fs.existsSync('bun.lock') ? 'bun run build' : 'npm run build';
+    const runner = 'bun run build';
     try {
       const out = execSync(runner, { stdio: 'pipe', encoding: 'utf8' });
       report.checks.push({ name: 'build', ok: true, detail: `${runner} exited 0` });

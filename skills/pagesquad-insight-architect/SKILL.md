@@ -45,6 +45,10 @@ Before completing execution, verify that:
 2. `[assert] Major conversion metrics map to explicit dataLayer triggers rather than raw DOM elements.`
 3. `[assert] No Personally Identifiable Information (PII) is captured in custom analytics payloads.`
 4. `[assert] Target output JSON matches schema exactly.`
+5. `[assert] Marketing pixels wait for consent (privacy_consent_mode v2). Pixel and GTM ids are public config. No lead PII is sent, and new script origins are listed so the Experience Architect can set CSP. See ../pagesquad-experience-architect/references/security_guidelines.md.`
+6. `[assert] GTM, GA4, Meta, TikTok, heatmaps, and chat do not execute during the LCP window. They load after consent and after the page load event. A tag in <head> fails the Lighthouse Performance 100 bar. See ../pagesquad-experience-architect/references/core_web_vitals.md.`
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails.
+- `../pagesquad-experience-architect/references/core_web_vitals.md` — when placing any third-party script
+- `../pagesquad-experience-architect/references/security_guidelines.md` — when the payload or consent mode is in doubt

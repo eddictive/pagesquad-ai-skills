@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
- * Build Verification Utility (Node.js)
+ * Build Verification Utility (Bun)
  * Helps the Experience Architect verify pipeline output deterministically.
  *
  * What it checks (mirrors SKILL.md execution assertions):
@@ -11,7 +11,7 @@
  *   4. <img> tags in .astro sources have explicit width/height.
  *
  * Usage:
- *   node verify-build.js [--src <dir>] [--dist <dir>] [--budget 50] [--max-islands 3] [--skip-build]
+ *   bun verify-build.js [--src <dir>] [--dist <dir>] [--budget 50] [--max-islands 3] [--skip-build]
  *
  * Note for AI Agents: run this after generating pages/components and record the
  * result in experience_state.json -> build_verification.
@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const USAGE = 'Usage: node verify-build.js [--src <dir>] [--dist <dir>] [--budget 50] [--max-islands 3] [--skip-build]';
+const USAGE = 'Usage: bun verify-build.js [--src <dir>] [--dist <dir>] [--budget 50] [--max-islands 3] [--skip-build]';
 
 function parseArgs(argv) {
   const opts = { src: 'src', dist: 'dist', budget: 50, maxIslands: 3, skipBuild: false };
@@ -73,7 +73,7 @@ function main() {
       console.error('Error: no package.json in cwd. Run from the project root or pass --skip-build.');
       process.exit(1);
     }
-    const runner = fs.existsSync('bun.lockb') || fs.existsSync('bun.lock') ? 'bun run build' : 'npm run build';
+    const runner = 'bun run build';
     try {
       const out = execSync(runner, { stdio: 'pipe', encoding: 'utf8' });
       report.checks.push({ name: 'build', ok: true, detail: `${runner} exited 0` });

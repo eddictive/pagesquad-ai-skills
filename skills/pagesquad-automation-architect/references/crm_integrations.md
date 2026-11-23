@@ -18,7 +18,7 @@ Connecting landing pages to the primary sales systems of record.
 - **Data Formatting**: Use middleware to normalize phone numbers (e.g., converting `08...` to `628...`) before CRM entry.
 - **Branching Logic**: Send different follow-ups based on the form source or lead data.
 
-## 4. Custom API Integration (Bun/Node.js)
+## 4. Custom API Integration (Bun)
 For high-volume or proprietary systems.
 - **Security**: Use environment variables for API keys. Implement CSRF protection.
 - **Performance**: Use asynchronous requests to avoid blocking the user's "Thank You" page load.

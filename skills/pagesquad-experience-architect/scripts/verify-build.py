@@ -56,7 +56,7 @@ def main():
         if not Path("package.json").exists():
             print("Error: no package.json in cwd. Run from the project root or pass --skip-build.", file=sys.stderr)
             sys.exit(1)
-        runner = "bun run build" if (Path("bun.lockb").exists() or Path("bun.lock").exists()) else "npm run build"
+        runner = "bun run build"
         try:
             result = subprocess.run(runner, shell=True, capture_output=True, text=True)
             if result.returncode != 0:

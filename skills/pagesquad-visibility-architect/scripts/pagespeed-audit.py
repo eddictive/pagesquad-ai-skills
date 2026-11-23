@@ -149,7 +149,7 @@ def main():
             print("\n--- PageSpeed Insights Report (Python) ---")
             print(f"URL: {url}")
             print(f"Strategy: {strategy}")
-            print(f"Performance Score: {perf_score}  (target: 90+)")
+            print(f"Performance Score: {perf_score}  (target: 100)")
             print(f"SEO Score: {seo_score}  (target: 90+)")
             if a11y_score is not None:
                 print(f"Accessibility Score: {a11y_score}  (target: 90+)")
@@ -236,13 +236,23 @@ def main():
                         print(f"  -> Fix: {fix}")
             print("------------------------------------------\n")
 
-            scores = [s for s in (perf_score, seo_score, a11y_score, bp_score) if s is not None]
-            if any(s < 90 for s in scores):
-                weak = sum(1 for s in scores if s < 90)
-                plural = "y is" if weak == 1 else "ies are"
-                print(f"Action Item: {weak} categor{plural} below the 90 target. Advise the Experience Architect to prioritize the failing audits above.")
+            misses = []
+            if perf_score is not None and perf_score < 100:
+                misses.append(f"performance {perf_score}/100")
+            if seo_score is not None and seo_score < 90:
+                misses.append(f"seo {seo_score}/100")
+            if a11y_score is not None and a11y_score < 90:
+                misses.append(f"accessibility {a11y_score}/100")
+            if bp_score is not None and bp_score < 90:
+                misses.append(f"best-practices {bp_score}/100")
+            if misses:
+                print(
+                    "Action Item: below target ("
+                    + ", ".join(misses)
+                    + "). Performance must be 100. Map the failing audits to core_web_vitals.md and hand them to the Experience Architect."
+                )
             else:
-                print("Status: All category scores meet the 90+ target. Visibility targets met.")
+                print("Status: Performance is 100. SEO, accessibility, and best-practices are 90+.")
 
     except urllib.error.URLError as e:
         print(f"Request failed: {e.reason}")

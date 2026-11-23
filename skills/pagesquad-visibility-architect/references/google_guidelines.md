@@ -17,10 +17,7 @@ Derived from Google Search Essentials (formerly Webmaster Guidelines) and the SE
 - **Trustworthiness**: Accuracy, transparency, and security (HTTPS).
 
 ### 3. User Experience (Page Experience)
-- **Core Web Vitals**:
-    - **LCP (Largest Contentful Paint)**: < 2.5s.
-    - **INP (Interaction to Next Paint)**: < 200ms.
-    - **CLS (Cumulative Layout Shift)**: < 0.1.
+- **Core Web Vitals / Lighthouse:** Performance score **100** on mobile lab. The "good" cuts (LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1) are about a 90, not a 100. Rules: `../../pagesquad-experience-architect/references/core_web_vitals.md`.
 - **Mobile Friendliness**: Responsive design is mandatory.
 - **HTTPS**: Security is a lightweight ranking signal.
 - **No Intrusive Interstitials**: Pop-ups shouldn't block the main content experience.

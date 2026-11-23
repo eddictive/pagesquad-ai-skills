@@ -37,12 +37,12 @@ Tailwind v4 has no `tailwind.config.js` by default — tokens live in CSS via `@
 |---|---|---|
 | **None (utilities only)** | Landing pages, marketing sections, most PageSquad builds | Full control, zero deps, brand tokens enforced |
 | **DaisyUI** | Static marketing sites needing standard widgets fast (buttons, cards, modals via semantic classes) | No JS required; themeable; some class bloat |
-| **Shadcn UI** | Only inside React islands with complex state (dashboards, multi-step forms with validation) | Requires React island (contradicts zero-JS default); copy-paste ownership model; a11y solid out of the box |
+| **Svelte 5 island** | Complex client state only (multi-step form, calculator). Hand-rolled runes first. A headless Svelte library is allowed inside that island if the user asks. | Hydration cost. Still not a reason to add React. |
 
 Rules of thumb:
-- A DaisyUI `btn` on a static page costs nothing; a Shadcn button costs a React island. Choose accordingly.
-- Never mix DaisyUI and Shadcn on the same page — pick one per project.
-- For simple forms, HTML5 validation + Astro Actions beats both (see `astro_patterns.md`).
+- A DaisyUI `btn` on a static page costs nothing. A Svelte island costs JS. Choose accordingly.
+- Do not add React, Shadcn-React, or a second CSS framework on the same page.
+- For simple forms, HTML5 validation + Astro Actions beats a component library (see `astro_patterns.md`).
 
 ## Section Templates (Tailwind-Ready)
 

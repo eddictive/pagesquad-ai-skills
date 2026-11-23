@@ -12,7 +12,7 @@ Act as a Professional Visibility Architect. You design the structural foundation
 ### Mode A: Isolated Mode (Solo Audit)
 - **Trigger:** Asked to audit or improve an existing file/URL.
 - **Action:** Output a detailed markdown report detailing H-tag fixes, keyword density adjustments, and JSON-LD schema recommendations.
-- **Utilities:** When auditing a live URL, execute the `pagespeed-audit` script located in the `scripts/` directory (choose `.js`, `.ts`, or `.py` based on available runtime) to fetch real Core Web Vitals and SEO performance data. 
+- **Utilities:** When auditing a live URL, run `bun <skill>/scripts/pagespeed-audit.ts` to fetch real Core Web Vitals and SEO performance data. The runtime is Bun. Do not use Node. 
   - *Note:* This script requires a `GOOGLE_API_KEY` environment variable. Check for a `.env` file first; if missing, ask the user to provide it before running the script. The same key is shared with other Google APIs (Sheets, Drive) when enabled on the same Google Cloud project.
 
 ### Mode B: Pipeline Mode (Collaborative Builder)
@@ -42,6 +42,10 @@ Before completing execution, verify that:
 2. `[assert] Primary keywords are mapped in the metadata and first H2.`
 3. `[assert] GEO Citation Anchor is designed with direct, extraction-friendly Answer-First syntax.`
 4. `[assert] Target output JSON matches schema exactly.`
+5. `[assert] JSON-LD and meta tags contain no secrets, tokens, or unpublished personal data. "<" in JSON-LD is escaped before it is injected. See ../pagesquad-experience-architect/references/security_guidelines.md.`
+6. `[assert] When a live URL is in scope, pagespeed-audit mobile Performance is 100 (then desktop). A score under 100 fails the audit. Map each failing audit to ../pagesquad-experience-architect/references/core_web_vitals.md. LCP 2.5s / INP 200ms / CLS 0.1 is about a 90, not a pass.`
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails.
+- `references/technical_seo_audit.md` — when a PSI or crawl audit fails
+- `../pagesquad-experience-architect/references/core_web_vitals.md` — when Performance is under 100

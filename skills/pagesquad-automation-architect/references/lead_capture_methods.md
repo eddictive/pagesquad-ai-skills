@@ -107,20 +107,16 @@ and `drive`. Two authentication methods are supported:
   `GOOGLE_SERVICE_ACCOUNT_JSON` (inline JSON or path to key file). The script
   auto-mints a JWT and exchanges it for a token — no pre-obtained token needed.
 
-**Run the script** (Node.js, Bun/TypeScript, or Python — all ship in `scripts/`):
+**Run the script with Bun** (do not use Node or npm):
 
 ```bash
-# Node.js (OAuth token)
+# OAuth token
 GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
-  node scripts/create-lead-sheet.js --name "Acme Leads" --sheet "Leads"
-
-# Node.js via Bun/TypeScript (service account)
-GOOGLE_SERVICE_ACCOUNT_JSON=$(grep GOOGLE_SERVICE_ACCOUNT_JSON .env | cut -d= -f2-) \
   bun scripts/create-lead-sheet.ts --name "Acme Leads" --sheet "Leads"
 
-# Python
-GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
-  python3 scripts/create-lead-sheet.py --name "Acme Leads" --sheet "Leads"
+# Service account
+GOOGLE_SERVICE_ACCOUNT_JSON=$(grep GOOGLE_SERVICE_ACCOUNT_JSON .env | cut -d= -f2-) \
+  bun scripts/create-lead-sheet.ts --name "Acme Leads" --sheet "Leads"
 ```
 
 The script will:

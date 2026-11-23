@@ -9,22 +9,22 @@ There are four primary ways to interact with these skills depending on your CLI:
 ### A. Antigravity CLI (Explicit Prefix `@`)
 Invoke the skills directly using the `@` symbol. Antigravity will load the specific architect context:
 **Prompt Example:**
-> "@pagesquad-experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "@pagesquad-experience-architect draft the Astro 7 + Svelte 5 component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ### B. Claude Code CLI (Slash Command `/`)
 Use the slash command automatically created from the skill folder name:
 **Prompt Example:**
-> "/pagesquad-experience-architect draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "/pagesquad-experience-architect draft the Astro 7 + Svelte 5 component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ### C. OpenAI Codex CLI (Direct Context in `AGENTS.md`)
 Because the workspace has `AGENTS.md` loaded in Codex CLI, Codex automatically knows the rules. Simply reference the architect role in your prompts:
 **Prompt Example:**
-> "Based on the Experience Architect guidelines, draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "Based on the Experience Architect guidelines, draft the Astro 7 + Svelte 5 component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ### D. Grok XAi CLI (Direct Context in `.grok/grok.md` and `.grok/skills/`)
 Grok CLI automatically processes instructions stored under `.grok/grok.md` and indexes skills in `.grok/skills/` in the workspace or home directory. Refer to the architect by name or invoke them directly:
 **Prompt Example:**
-> "Following the Experience Architect specifications, draft the Astro JS component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
+> "Following the Experience Architect specifications, draft the Astro 7 + Svelte 5 component structure for a 'Service Detail' page focusing on performance and mobile responsiveness."
 
 ---
 
@@ -39,7 +39,7 @@ To build a full project collaboratively, the architects execute sequentially und
 | **1** | **Visibility** | *None (User Prompt)* | `visibility_state.json` | Semantic brief, H-tags, keyword requirements, and SEO schemas. |
 | **2** | **Conversion** | `visibility_state.json` | `conversion_state.json` | Copywriting structure (PAS/AIDA), headline, and body copy. |
 | **3** | **Brand** | `conversion_state.json` | `brand_state.json` | HSL colors, typography settings, and visual prompting assets. |
-| **4** | **Experience** | All preceding JSONs | `experience_state.json` | High-performance Astro/Tailwind page components. |
+| **4** | **Experience** | All preceding JSONs | `experience_state.json` | Astro 7 + Svelte 5 + Tailwind v4 page components. |
 | **5** | **Automation** | `experience_state.json` | `automation_state.json` | Webhook CRM mappings & fast auto-response messaging templates. |
 | **6** | **Insight** | Experience & Automation | `insight_state.json` | GTM container setup, GA4 events, and A/B test criteria. |
 
@@ -50,13 +50,10 @@ To build a full project collaboratively, the architects execute sequentially und
 You can orchestrate and run the multi-agent pipeline simulation using the built-in runner:
 
 ```bash
-# Using bun run (local repository)
+# Local repository
 bun run orchestrate "Premium Fitness App Landing Page"
 
-# Using npm run (local repository)
-npm run orchestrate "Premium Fitness App Landing Page"
-
-# Using bunx (remote execution without cloning)
+# Remote execution without cloning
 bunx --bun git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness App Landing Page"
 ```
 

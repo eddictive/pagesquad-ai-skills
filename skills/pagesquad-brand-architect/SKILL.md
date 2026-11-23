@@ -46,9 +46,11 @@ Act as a Senior Brand Architect and Creative Director. You design brand guidelin
 ## ✅ Execution Assertions
 Before completing execution, verify that:
 1. `[assert] Color palette choice leverages visual trust and psychology rules (high-ticket/premium).`
-2. `[assert] Typography settings recommend web-safe or Google Fonts with clear weight hierarchies.`
+2. `[assert] Typography names at most two families with a clear weight hierarchy. A family name may come from a Google Font. The page self-hosts the files and does not use a fonts.googleapis.com stylesheet.`
 3. `[assert] AI prompts define clear resolution, styling keywords, and aspect ratios (e.g. --ar 16:9).`
-4. `[assert] Target output JSON matches schema exactly.`
+4. `[assert] The hero can be delivered at ≤ 100 KB for the mobile candidate, and the page uses at most two self-hosted font files. No Google Fonts stylesheet. See ../pagesquad-experience-architect/references/core_web_vitals.md.`
+5. `[assert] Target output JSON matches schema exactly.`
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails.
+- `../pagesquad-experience-architect/references/core_web_vitals.md` — when the hero weight or font delivery is in doubt

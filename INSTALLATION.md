@@ -13,35 +13,27 @@ We provide an interactive helper script to automate copying and linking the skil
 ### A. Zero-Clone Installation (Recommended) 🚀
 If you do not want to clone this repository, you can execute the installer directly from your project folder:
 
-#### Method 1: Using `bunx` or `npx` (Best for private/public repos)
+#### Method 1: Using `bunx`
 ```bash
-# Install locally inside your project workspace (Bun)
+# Install locally inside your project workspace
 bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 
-# Install locally inside your project workspace (Node)
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
-
-# Install globally in your home user scope (Bun)
+# Install globally in your home user scope
 bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --global
 ```
 
 #### Method 2: Using `curl` (Standard shell pipeline)
 ```bash
-# Install locally in your current project workspace (Bun)
+# Install locally in your current project workspace
 curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
-
-# Install locally in your current project workspace (Node)
-curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | node - --local
 ```
 *Note: For private repositories, authenticate the curl command by adding `-H "Authorization: token YOUR_GITHUB_PAT"`.*
 
 ### B. Standard Installation (Cloned Repo)
 If you have already cloned the repository, navigate to the folder and run:
 ```bash
-# Interactive setup menu (Bun or Node)
+# Interactive setup menu (Bun)
 bun scripts/install-skills.js
-# or
-node scripts/install-skills.js
 
 # Silent setup for all CLIs locally
 bun scripts/install-skills.js --local --all
@@ -202,15 +194,15 @@ deterministic, token-free tasks:
 
 | Script | Architect | Runtime | Purpose |
 | :--- | :--- | :--- | :--- |
-| `pagespeed-audit.{js,ts,py}` | pagesquad-visibility-architect | Node / Bun / Python | Fetch Core Web Vitals & SEO data from PageSpeed Insights API. Requires `GOOGLE_API_KEY`. |
-| `create-lead-sheet.{js,ts,py}` | pagesquad-automation-architect | Node / Bun / Python | Auto-create a Google Sheet + deploy an Apps Script web app for lead capture. Requires `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON`. |
-| `init-astro-project.sh` | pagesquad-experience-architect | Shell (Bash) | Scaffold a standard Astro + Tailwind v4 project structure. Idempotent. |
-| `verify-build.{js,ts,py}` | pagesquad-experience-architect | Node / Bun / Python | Verify build output: exit code, bundle size budget, island count, image dimensions. |
+| `pagespeed-audit.ts` | pagesquad-visibility-architect | Bun | Fetch Core Web Vitals and SEO data from PageSpeed Insights. Requires `GOOGLE_API_KEY`. Run with `bun`. |
+| `create-lead-sheet.ts` | pagesquad-automation-architect | Bun | Auto-create a Google Sheet and deploy an Apps Script web app for lead capture. Requires `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON`. Run with `bun`. |
+| `init-astro-project.sh` | pagesquad-experience-architect | Shell (Bash) | Scaffold Astro 7 + Svelte 5 + Tailwind v4. Idempotent. |
+| `verify-build.ts` | pagesquad-experience-architect | Bun | Verify build output: exit code, bundle size budget, island count, image dimensions. Run with `bun`. |
 
 ```bash
 # Example: auto-create a lead capture sheet (OAuth token)
 GOOGLE_OAUTH_TOKEN=$(grep GOOGLE_OAUTH_TOKEN .env | cut -d= -f2-) \
-  node skills/pagesquad-automation-architect/scripts/create-lead-sheet.js \
+  bun skills/pagesquad-automation-architect/scripts/create-lead-sheet.ts \
   --name "Acme Leads" --sheet "Leads"
 
 # Example: auto-create a lead capture sheet (service account)

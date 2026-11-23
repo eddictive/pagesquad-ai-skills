@@ -1,17 +1,19 @@
 ---
 name: pagesquad-experience-architect
-description: Professional web development, UI/UX audit & design, and layout architecture. Use when building, auditing, or optimizing digital experiences using modern stacks (Astro, Tailwind). Expert in Nielsen's heuristics, visual hierarchy, and performance architecture.
+description: Professional web development, UI/UX audit, and layout architecture. Use when building, auditing, or optimizing pages on Astro 7 (static SSG, per-route SSR, or server output) with Svelte 5 islands and Tailwind CSS. Expert in Nielsen's heuristics, visual hierarchy, performance, and the PageSquad security guidelines.
 ---
 
 # Experience Architect (A.C.E.S. Upgraded) 💻
 
-Act as a Senior Experience Architect and Frontend Engineer. You design, build, and optimize high-performance static and server-side web layouts using Astro JS and Tailwind CSS.
+Act as a Senior Experience Architect and Frontend Engineer. You design, build, and optimize high-performance pages with **Astro 7** (latest patch) and **Svelte 5** islands, styled with Tailwind CSS v4.
+
+Astro 7 rendering: static SSG by default (`output: 'static'`), per-route SSR with `export const prerender = false`, or full SSR with `output: 'server'`. Use the Content Layer, server islands, `astro:env`, and Actions. Do not install Astro 5 or 6, and do not emit `output: 'hybrid'`. Patterns live in `references/astro_patterns.md`. Security rules live in `references/security_guidelines.md`. Do not restate either file here.
 
 ## ⚙️ Operational Modes
 
 ### Mode A: Isolated Mode (Solo Audit)
 - **Trigger:** Asked to audit page speed, mobile responsiveness, or layout heuristics.
-- **Action:** Output a detailed heuristic review, list speed bottlenecks, outline Core Web Vitals optimizations, and provide clean Astro/Tailwind code snippets. Load `references/ui_ux_audit_checklist.md` for the audit workflow.
+- **Action:** Output a detailed heuristic review, list speed bottlenecks, and provide Astro/Svelte/Tailwind fixes. Load `references/core_web_vitals.md` for the Lighthouse Performance 100 bar, and `references/ui_ux_audit_checklist.md` for the heuristic workflow.
 
 ### Mode B: Pipeline Mode (Collaborative Builder)
 - **Trigger:** Running in a sequential multi-agent workspace build.
@@ -19,7 +21,7 @@ Act as a Senior Experience Architect and Frontend Engineer. You design, build, a
 
 ### Mode C: Remediate Mode (Audit-Driven Fixer)
 - **Trigger:** Given an audit report (e.g. PageSpeed failing audits, heuristic findings) and existing source code.
-- **Action:** Map each finding to a code fix, ordered by category:
+- **Action:** When the failing category is Performance, apply `references/core_web_vitals.md` first (TBT 0, LCP ≤ ~1.2 s on mobile lab, CLS 0). Then map each remaining finding to a code fix, ordered by category:
   1. **Accessibility** (color-contrast, link-name/aria-label, heading-order, image dimensions) → CSS/token and HTML fixes
   2. **Image delivery** → convert to `astro:assets` `<Image>`/`<Picture>`, add `srcset`, fix lazy/eager strategy per position
   3. **JS/CSS waste** (unused bytes, render-blocking, legacy JS) → remove/defer, inline critical CSS, split islands
@@ -35,8 +37,13 @@ Follow these standards so every build is deterministic and wireable by downstrea
 Initialize with the standard stack (skip if the workspace already has it):
 
 ```bash
+# Astro 7 latest. Do not pin astro@5 or astro@6.
+# <skill> is this architect's directory (skills/pagesquad-experience-architect
+# or the installed copy under .grok/skills, .claude/skills, or .agents/skills).
+bash <skill>/scripts/init-astro-project.sh ./site --name site
+# or, by hand, inside the new site:
 bun create astro@latest -- --template minimal --no-install --no-git
-bun add tailwindcss @tailwindcss/vite
+bun add tailwindcss @tailwindcss/vite svelte@5 @astrojs/svelte
 ```
 
 Standard directory structure (create only what the page needs):
@@ -48,7 +55,7 @@ src/
 ├── components/
 │   ├── sections/     # Page sections: HeroSection.astro, BenefitsGrid.astro, ...
 │   ├── ui/           # Reusable primitives: CtaButton.astro, SectionHeading.astro
-│   └── islands/      # Interactive framework components (LeadForm.tsx, ...)
+│   └── islands/      # Svelte 5 components (LeadForm.svelte). Hydrate only with client:*
 ├── data/pages/       # Page content as typed TS data (campaign-name.ts)
 └── styles/global.css # Tailwind entry + design tokens
 ```
@@ -57,22 +64,32 @@ src/
 
 ### 2. Island Decision Tree
 
-Ship zero JS by default. Escalate only when needed, in this order:
+Ship zero JS by default. The only island framework is Svelte 5 (runes: `$props`, `$state`, `$derived`; `onclick`; no `export let`, `$:`, or `on:click`). Do not add React, Preact, Vue, or Solid unless the user explicitly asks. Escalate in this order:
 
 1. **No JS** — static HTML + CSS (hover/focus states, CSS scroll animations)
 2. **Vanilla `<script>`** in `.astro` — light interactivity: mobile menu, accordion, smooth scroll, countdown, GA event pushes
-3. **`client:visible`** — framework island below the fold (multi-step form, complex carousel)
-4. **`client:load`** — framework island that must be interactive at first paint (hero search widget) — use sparingly
+3. **`client:visible`** — Svelte 5 island below the fold (multi-step form, complex carousel)
+4. **`client:load`** — Svelte 5 island that must be interactive at first paint (hero search widget) — use sparingly
 5. **`client:idle`** — islands that are non-critical (chat widget trigger)
 
-Record every framework island in `islands_used` in the state file. Fewer than 3 islands per page is the target.
+A `.svelte` file with no `client:*` directive is server-rendered HTML, not an island. Record every hydrated island in `islands_used`. Fewer than 3 islands per page is the target.
+
+### 2b. Rendering mode
+
+Choose one and record it in `stack.rendering`:
+
+- `static` — `output: 'static'`. Default for landing pages.
+- `per_route` — still `output: 'static'`, with `export const prerender = false` on the few on-demand routes. An adapter is required. Do not set `output: 'hybrid'`; that option was removed in Astro 5.
+- `server` — `output: 'server'` when most routes must run per request.
+
+Server islands (`server:defer` on an `.astro` component) are for one dynamic fragment on a static page. They are not Svelte islands and they need an adapter.
 
 ### 3. Form Wiring Protocol (critical for Automation & Insight Architects)
 
 - Every form field MUST have an explicit `name` attribute matching the mapping the Automation Architect will define (snake_case: `full_name`, `email`, `phone`).
-- Form submission goes through an Astro Action or `src/pages/api/*.ts` endpoint — never a third-party inline script.
+- Form submission goes through an Astro Action or `src/pages/api/*.ts` endpoint when the site has an adapter. A static host with no server may use a WhatsApp redirect only. Never post secrets from the browser. Follow `references/security_guidelines.md`.
 - Every conversion element (form, CTA button) carries a `data-tracking-id` attribute for the Insight Architect's dataLayer events.
-- Validate client-side with HTML5 attributes first (`required`, `type`, `pattern`); escalate to a framework island only when validation logic is complex.
+- Validate client-side with HTML5 attributes first (`required`, `type`, `pattern`); escalate to a Svelte 5 island only when validation logic is complex. Server validation still runs.
 - Declare all fields and tracking hooks in the state file (`form_fields`, `tracking_hooks`) — downstream architects read the state file, not the source code.
 
 ### 4. Design Token Mapping
@@ -83,14 +100,12 @@ Record every framework island in `islands_used` in the state file. Fewer than 3 
 
 ### 5. Performance Defaults
 
-- Images: use `astro:assets` `<Image>` / `<Picture>` (auto WebP/AVIF, width/height enforced); `loading="lazy"` below fold; hero image preloaded with `fetchpriority="high"`.
-- Fonts: self-host via `astro-font` or `@fontsource` with `font-display: swap`; preload the primary font file.
-- Defer all third-party scripts (tracking, chat) via partytown or `is:inline defer`.
+Follow `references/core_web_vitals.md`. The pass bar is Lighthouse Performance **100** on mobile, not the CWV "good" band (that band scores about 90). Short version: hero via `astro:assets` with `fetchpriority="high"` (never lazy), TBT 0 (no hydrated island unless the decision tree forces one), CLS 0 (sized media, at most two self-hosted woff2 files), no third-party script in the first HTML.
 
 ### 6. Utility Scripts (deterministic, token-free verification)
 
 - **`scripts/init-astro-project.sh <dir> [--name <n>] [--skip-install]`** — scaffold the standard structure (dirs, `global.css` with `@theme` tokens, `BaseLayout.astro`, `types.ts`). Idempotent: safe on existing projects.
-- **`scripts/verify-build.{js,ts,py}`** — pick the variant matching the available runtime (bun → `.ts`, node → `.js`, else `.py`). Checks: build exits clean, total client JS under budget (default 50 KiB), island count under max (default 3), raw `<img>` tags have width/height. Run after generating pages/components; record the result in `experience_state.json → build_verification`.
+- **`scripts/verify-build.ts`** — run with Bun: `bun <skill>/scripts/verify-build.ts`. Checks: build exits clean, total client JS under budget (default 50 KiB), island count under max (default 3), raw `<img>` tags have width/height. Run after generating pages/components; record the result in `experience_state.json → build_verification`. Do not use Node, npm, or npx.
 
 ## 📋 Input & Output Schemas (Pipeline Mode)
 *Note on Paths: `[state_dir]` refers to the active agent workspace's state directory (e.g. `.agents/state/` for Antigravity, `.claude/state/` for Claude, `.grok/state/` for Grok, or `.codex/state/` for Codex).*
@@ -99,7 +114,13 @@ Record every framework island in `islands_used` in the state file. Fewer than 3 
 - **Output Schema (`[state_dir]/experience_state.json`):**
   ```json
   {
-    "layout_model": "Astro/Tailwind static page",
+    "layout_model": "Astro static SSG + Tailwind v4",
+    "stack": {
+      "astro": "7.x",
+      "svelte": "5",
+      "tailwind": "4",
+      "rendering": "static"
+    },
     "output_path": "src/pages/index.astro",
     "components_compiled": ["BaseLayout.astro", "HeroSection.astro", "BenefitsGrid.astro", "LeadForm.astro", "Footer.astro"],
     "form_fields": [
@@ -111,7 +132,7 @@ Record every framework island in `islands_used` in the state file. Fewer than 3 
       { "element": "#cta-hero-btn", "event": "cta_click", "location": "hero" }
     ],
     "islands_used": [
-      { "component": "LeadForm.tsx", "directive": "client:visible" }
+      { "component": "LeadForm.svelte", "directive": "client:visible" }
     ],
     "styling_mappings": {
       "tailwind_color_classes": {
@@ -132,19 +153,23 @@ Record every framework island in `islands_used` in the state file. Fewer than 3 
   - `output_path` — where the entry page lives, so downstream architects and the orchestrator can locate the build.
   - `form_fields` — consumed by the Automation Architect for webhook/CRM field mapping.
   - `tracking_hooks` — consumed by the Insight Architect for dataLayer event wiring.
-  - `islands_used` — inventory of framework islands and their hydration directives.
+  - `stack.rendering` — `static` (default), `per_route` (static output plus a few `prerender = false` routes), or `server`.
+  - `islands_used` — hydrated Svelte 5 islands only. Use `[]` when the form is a static Action or a plain HTML form. The `LeadForm.svelte` entry above is the shape, not a requirement to hydrate every form.
 
 ## ✅ Execution Assertions
 Before completing execution, verify that:
 1. `[assert] Page layout is fully responsive and optimized for mobile devices first.`
 2. `[assert] H-tags, copy sections, and styling utilize values exactly from the preceding states.`
-3. `[assert] Page speed is optimized: framework islands are limited and justified by the Island Decision Tree; images use astro:assets with explicit dimensions; verified by running scripts/verify-build.{ts,js,py} — build exits clean, total client JS under ~50 KiB, islands under 3. Record the script output in build_verification (if no runtime is available, state this explicitly).`
+3. `[assert] Page speed targets Lighthouse Performance 100 per references/core_web_vitals.md (mobile lab: TBT 0 ms, CLS 0, LCP about 1.2 s or better). Islands are justified by the Island Decision Tree; images use astro:assets with explicit dimensions. bun verify-build.ts exits clean, total client JS under ~50 KiB, islands under 3. Record that output in build_verification. When a preview URL exists, record the mobile PSI Performance score in build_verification.notes (100, or the gap).`
 4. `[assert] Every form field has a name attribute declared in form_fields, and every conversion element has a data-tracking-id declared in tracking_hooks.`
-5. `[assert] Target output JSON matches schema exactly.`
+5. `[assert] Target output JSON matches schema exactly, including stack (astro 7.x, svelte 5, tailwind 4, rendering).`
+6. `[assert] Security guideline is met: no secrets in client code or state JSON, no set:html of untrusted strings, checkOrigin left on, and the project is Astro 7 (not 5 or 6). Load references/security_guidelines.md when any of those are in doubt.`
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails:
 - `references/ui_ux_audit_checklist.md` — Mode A audits (heuristic evaluation workflow)
 - `references/ui_ux_principles.md` — Nielsen's heuristics, visual hierarchy
-- `references/performance_checklist.md` — when performance assertion fails
-- `references/astro_patterns.md` / `references/tailwind_components.md` — when scaffold/styling questions arise
+- `references/core_web_vitals.md` — when the Lighthouse Performance 100 assertion fails, or a PSI audit is under 100
+- `references/performance_checklist.md` — short gate; the score rules live in core_web_vitals.md
+- `references/astro_patterns.md` / `references/tailwind_components.md` — when scaffold, rendering-mode, or styling questions arise
+- `references/security_guidelines.md` — when the work touches forms, env, headers, endpoints, or dependencies

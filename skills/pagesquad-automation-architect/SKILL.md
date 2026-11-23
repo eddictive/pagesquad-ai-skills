@@ -25,7 +25,7 @@ Rules:
 
 ### Mode A: Isolated Mode (Solo Audit)
 - **Trigger:** Asked to connect API endpoints, set up Zapiers/Makes, or audit lead flows.
-- **Action:** Output integration blueprints, JSON webhook body examples, custom Node/Bun javascript scripts, and trigger sequences. Load `references/lead_capture_methods.md` when building WhatsApp-redirect or Google-Sheet capture.
+- **Action:** Output integration blueprints, JSON webhook body examples, Bun scripts, and trigger sequences. Load `references/lead_capture_methods.md` when building WhatsApp-redirect or Google-Sheet capture.
 
 ### Mode B: Pipeline Mode (Collaborative Builder)
 - **Trigger:** Running in a sequential multi-agent workspace build.
@@ -73,6 +73,8 @@ Before completing execution, verify that:
 4. `[assert] Auto-response message templates use dynamic tokens (e.g., {{first_name}}).`
 5. `[assert] A dataLayer event (e.g. lead_submission with capture_method parameter) is defined for every form submit path.`
 6. `[assert] Target output JSON matches schema exactly.`
+7. `[assert] The capture path follows the security guideline: no secrets in client code, WhatsApp text, or state JSON; server forwards use an allowlist; error responses omit exception text. Load ../pagesquad-experience-architect/references/security_guidelines.md when the path is a webhook, Apps Script, or Action.`
+8. `[assert] Capture does not use an iframe, embedded CRM widget, or chat bubble in the first view. Native form or wa.me only. See ../pagesquad-experience-architect/references/core_web_vitals.md.`
 
 ## ⚡ Token Optimization Protocol
 Do not read files inside `references/` during normal pipeline generation. Only load them on demand when a validation assertion fails:
@@ -80,9 +82,11 @@ Do not read files inside `references/` during normal pipeline generation. Only l
 - `references/crm_integrations.md` — CRM webhook specifics
 - `references/whatsapp_automation.md` — WhatsApp Business API, templates, follow-up logic
 - `references/lead_scoring_nurture.md` — scoring and nurture sequences
+- `../pagesquad-experience-architect/references/security_guidelines.md` — when the capture path can leak a secret, PII, or an open endpoint
+- `../pagesquad-experience-architect/references/core_web_vitals.md` — when the capture UI could add an iframe, widget, or extra script
 
 ## 🛠️ Utility Scripts
 The `scripts/` directory provides deterministic tools for common automation tasks:
-- **`create-lead-sheet.js` / `create-lead-sheet.py` / `create-lead-sheet.ts`** — Auto-provisions a Google Sheet with a `Leads` tab and deploys an Apps Script web app that appends form POSTs as rows. Supports `GOOGLE_OAUTH_TOKEN` (direct) or `GOOGLE_SERVICE_ACCOUNT_JSON` (auto-minted JWT) for authentication. Run when the `submit_url` needs to be generated programmatically (e.g., new client onboarding or sandbox environments).
+- **`scripts/create-lead-sheet.ts`** — run with Bun: `bun <skill>/scripts/create-lead-sheet.ts`. Auto-provisions a Google Sheet with a `Leads` tab and deploys an Apps Script web app that appends form POSTs as rows. Supports `GOOGLE_OAUTH_TOKEN` (direct) or `GOOGLE_SERVICE_ACCOUNT_JSON` (auto-minted JWT) for authentication. Run when the `submit_url` needs to be generated programmatically (e.g., new client onboarding or sandbox environments). The runtime is Bun.
   - *Note:* Requires `GOOGLE_OAUTH_TOKEN` or `GOOGLE_SERVICE_ACCOUNT_JSON` in `.env`. If missing, the script fails with an `Agent Action Required` directive. See [AGENTIC_SETUP.md](./../AGENTIC_SETUP.md#environment-variables) for setup instructions.
 - **`crm_integrations.md`** — reference guide for HubSpot, Salesforce, and other webhook endpoints.

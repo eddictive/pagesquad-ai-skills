@@ -13,7 +13,7 @@ The **PageSquad AI Framework** is a modular collection of specialized AI persona
 | **Visibility** | Strategist | SEO/GEO Optimization & Semantic Structure |
 | **Conversion** | Narrative | Persuasive Copywriting & Sales Psychology |
 | **Brand** | Visuals | Aesthetic Trust, AI Asset Gen & Brand Identity |
-| **Experience** | Technical | High-Perf UI/UX (Astro/Tailwind) & Frontend |
+| **Experience** | Technical | High-perf UI/UX (Astro 7, Svelte 5, Tailwind v4) |
 | **Automation** | Operations | CRM Integration, Webhooks & Lead Nurturing |
 | **Insight** | Analytics | Data Tracking, A/B Testing & Growth Audits |
 
@@ -28,9 +28,9 @@ This isn't just a list of prompts. This is a **structured procedural framework**
 4.  **Dynamic Reference Hydration:** Detailed reference manuals are only read when an assertion fails, minimizing token overhead.
 
 ### Features
-- **A.C.E.S. Orchestrator:** Sequential, automated build simulation via `node scripts/orchestrate-build.js`.
+- **A.C.E.S. Orchestrator:** Sequential, automated build simulation via `bun scripts/orchestrate-build.js`.
 - **GEO (Generative Engine Optimization):** Built-in strategies for the "AI-Search" era (crawlers & citations).
-- **Islands Architecture:** Optimized for Astro JS and high Core Web Vitals.
+- **Islands Architecture:** Astro 7 (static by default) with Svelte 5 islands and Tailwind CSS v4. High Core Web Vitals.
 - **Automation-First:** Native support for the "5-Minute Rule" in lead response, including programmatic Google Sheet + Apps Script web-app provisioning via `create-lead-sheet` scripts.
 - **Inter-Agent Protocol:** Programmatic state mapping variables.
 
@@ -59,13 +59,10 @@ To get started with the PageSquad AI Framework, you will need a supported agent 
 ### Zero-Clone Installation (Recommended) 🚀
 No need to clone the repository! Run the installer directly inside your target project folder:
 ```bash
-# Using bunx (For Bun)
+# bunx
 bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local
 
-# Using npx (For Node)
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local
-
-# Using curl & bun / node
+# curl
 curl -fsSL https://raw.githubusercontent.com/eddictive/pagesquad-ai-skills/main/scripts/install-skills.js | bun - --local
 ```
 *For global installations or additional agent CLI targets, see the full [INSTALLATION.md](./INSTALLATION.md) guide or the step-by-step [AGENTIC_SETUP.md](./AGENTIC_SETUP.md) for specific agent instructions.*
@@ -82,13 +79,10 @@ This framework can be used in two ways:
 1.  **Individual Activation:** Use an architect as a specialized consultant in **Isolated Mode** for a specific task.
 2.  **Orchestrated Workflow (A.C.E.S. Pipeline):** Run the automated pipeline orchestrator to sequence the development cycle sequentially from concept to analytics tags:
     ```bash
-    # Using bunx (remote execution without cloning)
+    # bunx (remote execution without cloning)
     bunx --bun git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness Brand"
 
-    # Using npx (remote execution without cloning)
-    npx -y --package=git+https://github.com/eddictive/pagesquad-ai-skills.git pagesquad-orchestrate "Premium Fitness Brand"
-
-    # Using bun run / npm run (local repository)
+    # bun (local repository)
     bun run orchestrate "Premium Fitness Brand"
     ```
     This updates the state files under `[state_dir]/*.json` (e.g., `.agents/state/`) programmatically.

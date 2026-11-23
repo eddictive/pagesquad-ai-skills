@@ -1,24 +1,14 @@
 # Web Performance & SEO Checklist
 
-Every landing page must be fast and findable.
+Score rules live in `core_web_vitals.md` (Lighthouse Performance **100**). This file is the short gate plus on-page SEO and accessibility.
 
-## Performance Checklist
+## Performance gate
 
-### 1. Image Optimization
-- [ ] Use `WebP` or `AVIF` formats.
-- [ ] Set explicit `width` and `height` to prevent Layout Shift (CLS).
-- [ ] Lazy load images below the fold (`loading="lazy"`).
-- [ ] Use `<picture>` or `srcset` for responsive images.
-
-### 2. JavaScript & Critical Path
-- [ ] Minimize "Heavy" libraries.
-- [ ] Use Astro Islands to ship zero JS by default.
-- [ ] Defer non-critical scripts (Tracking, Chatbots).
-- [ ] Inline critical CSS for the Hero section.
-
-### 3. Caching & Delivery
-- [ ] Use a CDN (Cloudflare, Vercel Edge).
-- [ ] Configure `Cache-Control` headers for static assets.
+- [ ] Mobile PSI Performance is 100 on two runs. Desktop Performance is 100. See `core_web_vitals.md`.
+- [ ] Hero is an `astro:assets` image, eager, `fetchpriority="high"`, mobile file ≤ 100 KB. Not lazy. Not a CSS background.
+- [ ] TBT is 0 ms. No tag, chat, or hydrated island in the first HTML unless the Island Decision Tree requires it.
+- [ ] CLS is 0. Media has width and height. At most two self-hosted woff2 files. No `fonts.googleapis.com`.
+- [ ] Fingerprinted assets use a long `Cache-Control` (`public, max-age=31536000, immutable`) at the CDN.
 
 ## SEO & Accessibility (A11y)
 

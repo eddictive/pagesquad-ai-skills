@@ -4,6 +4,41 @@ Roadmap pengembangan skill PageSquad AI. Satu bagian per audit/plan, terbaru di 
 
 ---
 
+## Lighthouse Performance 100 — 2026-11-23
+
+**Status:** Guideline added. One home: `skills/pagesquad-experience-architect/references/core_web_vitals.md`.
+
+The CWV "good" band (LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1) scores about **90**, not 100. The guide uses the documented Lighthouse 10 weights (TBT 30%, LCP 25%, CLS 25%, FCP 10%, Speed Index 10%) and a mobile lab bar of TBT 0 ms, CLS 0, LCP about 1.2 s. Field CrUX stays a FAST / good-band check, not a score out of 100.
+
+Experience, Visibility, Brand, Insight, and Automation each assert their piece. `pagespeed-audit` now fails Performance under 100 and leaves SEO, accessibility, and best-practices at 90+.
+
+---
+
+## Astro 7 + Svelte 5 + security — 2026-11-23
+
+**Status:** Stack, security guideline, and maintainer `AGENTS.md` landed. Open items below.
+
+### What changed
+
+- Generated sites target **Astro 7 latest patch** (7.4 line as of 2026-11) + **Svelte 5** islands + Tailwind v4. Astro 5 and 6 are not install targets. Astro 5.18.2 was the last 5.x release and is outside the security-fix window.
+- `astro_patterns.md` is the stack source of truth: static / per-route SSR / server output, Content Layer (`src/content.config.ts`), server islands, `astro:env`, Actions, Svelte 5 runes. Removed APIs called out: `output: 'hybrid'`, `Astro.glob()`, `<ViewTransitions />`, `src/content/config.ts`.
+- `init-astro-project.sh` adds `svelte@5`, `@astrojs/svelte`, `svelte.config.js`, and an Astro 7 config (`output: 'static'`, `security.checkOrigin`). Warns when an existing project is still on Astro 5 or 6.
+- Orchestrator sample state no longer emits a React `LeadForm.tsx` island. Simple forms stay at zero hydrated islands. `stack` is part of `experience_state.json`.
+- Security guideline: `skills/pagesquad-experience-architect/references/security_guidelines.md` (pointer: `docs/SECURITY.md`). Visibility, Automation, and Insight assert against it. New Apps Script handlers omit `err.toString()`.
+- Maintainer contract: root `AGENTS.md` (`pagesquad-skills-repo`). The installer will not overwrite that marker. `AGENTS.md` is tracked again.
+
+### Still open
+
+| Item | Why it matters |
+|---|---|
+| `create-lead-sheet` still deploys a public Apps Script `doPost` with no server-side shared secret | A secret in client JS does not help. The real fix is an Astro Action proxy that holds `LEAD_INGEST_SECRET`. Documented in the security guideline; not built. |
+| No automated tests for `verify-build`, the installer, or the orchestrator | Schema drift between `SKILL.md` and `orchestrate-build.js` is easy to miss. |
+| JS / TS / Python copies of each utility can drift | A fix in one runtime is unfinished until the other two match. There is no check that enforces this. |
+| `wa-link-builder` utility | Still open from the 2026-09-16 Automation plan. |
+| Service-account docs used to recommend `roles/editor` | Docs now say least privilege. The script scopes were already narrower than Editor. No code change required. |
+
+---
+
 ## Experience Architect Upgrade — 2026-09-16
 
 **Sumber:** Audit mendalam SKILL.md + 5 file references + integrasi `orchestrate-build.js`
@@ -51,7 +86,7 @@ Roadmap pengembangan skill PageSquad AI. Satu bagian per audit/plan, terbaru di 
 **#3 — `astro_patterns.md` rewrite**: `astro:assets` (`<Image>`/`<Picture>` dengan srcset, width/height enforced), Astro Actions untuk form (server logic + zod validation tanpa island), ClientRouter View Transitions, sitemap integration, kontrak field name dengan Automation Architect.
 
 **#4 — Utility scripts**:
-- `scripts/init-astro-project.sh` — scaffold struktur standar (8 direktori, `global.css` dengan `@theme` tokens, `BaseLayout.astro`, `types.ts`); idempotent; opsi `--skip-install` untuk project existing; deteksi bun/npm otomatis.
+- `scripts/init-astro-project.sh` — scaffold struktur standar (8 direktori, `global.css` dengan `@theme` tokens, `BaseLayout.astro`, `types.ts`); idempotent; opsi `--skip-install` untuk project existing. Runtime later pinned to Bun only (npm fallback removed).
 - `scripts/verify-build.{js,ts,py}` — 4 checks: build exit code, total client JS ≤ budget (default 50 KiB), island count ≤ max (default 3), raw `<img>` punya width/height. Output PASS/FAIL per check + exit code untuk orchestrator. Teruji 3 skenario (over-budget FAIL → partial FAIL → all-PASS) di ketiga varian.
 
 **#5 — `tailwind_components.md`**: decision table 3 kolom (vanilla utilities default / DaisyUI untuk widget static / Shadcn hanya dalam React island kompleks) + larangan campur library dalam satu project.

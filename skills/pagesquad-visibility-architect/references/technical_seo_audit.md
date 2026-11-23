@@ -3,15 +3,12 @@
 A workflow for auditing page speed, technical health, and performance metrics.
 
 ## 1. PageSpeed Insights (PSI) Audit
-Analyze performance using [PageSpeed Insights](https://pagespeed.web.dev/).
 
-### Critical Metrics (Core Web Vitals)
-- **LCP (Largest Contentful Paint)**: Measure the time it takes for the largest image or text block to become visible.
-    - *Fixes*: Optimize image size, implement lazy loading, use a CDN.
-- **INP (Interaction to Next Paint)**: Measure the latency of all user interactions.
-    - *Fixes*: Reduce JavaScript execution time, break up long tasks.
-- **CLS (Cumulative Layout Shift)**: Measure visual stability.
-    - *Fixes*: Set dimensions on images/iframes, avoid inserting content above existing content.
+Run `bun <skill>/scripts/pagespeed-audit.ts` (mobile, then desktop) or [PageSpeed Insights](https://pagespeed.web.dev/). The runtime is Bun.
+
+Pass bar: **Performance 100** on mobile (two runs) and desktop. SEO, accessibility, and best-practices stay at 90+. Field CrUX must be **FAST** when it exists. Do not treat LCP 2.5 s / INP 200 ms / CLS 0.1 as a 100.
+
+The fix map is `../../pagesquad-experience-architect/references/core_web_vitals.md`. Hand failing audit ids to the Experience Architect. Do not lazy-load the LCP image.
 
 ## 2. Technical Health Checklist
 - [ ] **HTTPS**: Is the site secure?
@@ -37,5 +34,5 @@ Analyze performance using [PageSpeed Insights](https://pagespeed.web.dev/).
 ## Performance Optimization Workflow
 1. **Audit**: Run PSI and Yoast Checker.
 2. **Prioritize**: Focus on LCP and CLS first (highest impact).
-3. **Implement**: Collaborate with `page-builder` to apply code changes.
+3. **Implement**: Hand the failing audit ids to the Experience Architect. Brand and Insight change assets and tags only as `core_web_vitals.md` allows.
 4. **Validate**: Re-run audits to confirm improvements.

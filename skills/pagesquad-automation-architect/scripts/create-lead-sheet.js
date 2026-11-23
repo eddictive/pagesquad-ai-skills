@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
- * Google Lead Capture Sheet Creator (Node.js)
+ * Google Lead Capture Sheet Creator (Bun)
  *
  * Automates the "google_script_sheet" capture method by:
  *   1. Creating a Google Sheet with a "Leads" tab and header row.
@@ -30,9 +30,9 @@
  *     - https://www.googleapis.com/auth/drive
  *
  * Usage:
- *   GOOGLE_OAUTH_TOKEN=ya29.xxxx node create-lead-sheet.js --name "My Leads" --sheet "Leads"
+ *   GOOGLE_OAUTH_TOKEN=ya29.xxxx bun create-lead-sheet.js --name "My Leads" --sheet "Leads"
  *   # or with a service account:
- *   GOOGLE_SERVICE_ACCOUNT_JSON=/path/to/key.json node create-lead-sheet.js --name "My Leads"
+ *   GOOGLE_SERVICE_ACCOUNT_JSON=/path/to/key.json bun create-lead-sheet.js --name "My Leads"
  *
  * Note for AI Agents: If credentials are missing, the script fails gracefully
  *   with an "Agent Action Required" directive. Ask the user to set up a service
@@ -66,7 +66,7 @@ function parseArgs(argv) {
     if (argv[i] === '--name' && argv[i + 1]) opts.name = argv[++i];
     else if (argv[i] === '--sheet' && argv[i + 1]) opts.sheet = argv[++i];
     else if (argv[i] === '-h' || argv[i] === '--help') {
-      console.log('Usage: node create-lead-sheet.js [--name "Sheet Name"] [--sheet "Tab Name"]');
+      console.log('Usage: bun create-lead-sheet.js [--name "Sheet Name"] [--sheet "Tab Name"]');
       console.log('Required env: GOOGLE_OAUTH_TOKEN or GOOGLE_SERVICE_ACCOUNT_JSON');
       process.exit(0);
     }
@@ -288,7 +288,7 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService
-      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .createTextOutput(JSON.stringify({ status: 'error' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }

@@ -248,7 +248,7 @@ function doPost(e) {{
       .setMimeType(ContentService.MimeType.JSON);
   }} catch (err) {{
     return ContentService
-      .createTextOutput(JSON.stringify({{ status: 'error', message: err.toString() }}))
+      .createTextOutput(JSON.stringify({{ status: 'error' }}))
       .setMimeType(ContentService.MimeType.JSON);
   }}
 }}

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * PageSquad AI Pipeline Orchestrator
@@ -139,7 +139,13 @@ async function runPipeline(concept) {
   console.log(`💻 [Step 4] Invoking Experience Architect...`);
   const brandState = readState('brand_state.json');
   const experienceOutput = {
-    "layout_model": "Astro islands static page",
+    "layout_model": "Astro static SSG + Tailwind v4",
+    "stack": {
+      "astro": "7.x",
+      "svelte": "5",
+      "tailwind": "4",
+      "rendering": "static"
+    },
     "output_path": "src/pages/index.astro",
     "components_compiled": ["BaseLayout.astro", "Header.astro", "Hero.astro", "PASSection.astro", "CtaBanner.astro", "Footer.astro"],
     "form_fields": [
@@ -151,21 +157,19 @@ async function runPipeline(concept) {
       { "element": "#lead-form", "event": "lead_submission", "location": "cta_banner" },
       { "element": "#cta-hero-btn", "event": "cta_click", "location": "hero" }
     ],
-    "islands_used": [
-      { "component": "LeadForm.tsx", "directive": "client:visible" }
-    ],
+    "islands_used": [],
     "styling_mappings": {
       "tailwind_color_classes": {
-        "primary": `text-[${brandState.color_system.primary}]`,
-        "background": `bg-[${brandState.color_system.background}]`,
-        "cta_button": `bg-[${brandState.color_system.accent}] hover:bg-opacity-90`
+        "primary": "text-primary",
+        "background": "bg-background",
+        "cta_button": "bg-accent hover:opacity-90"
       },
       "fonts_applied": [brandState.typography.header_font, brandState.typography.body_font]
     },
     "build_verification": {
       "passed": true,
       "command": "bun run build",
-      "notes": "Simulated orchestrator run — single island, static-first layout"
+      "notes": "Simulated orchestrator run — zero hydrated islands, Astro 7 static SSG, Svelte 5 available"
     },
     "accessibility_status": "WCAG_AA_Validated"
   };

@@ -12,7 +12,7 @@ registry:
 | `pagesquad-visibility-architect` | SEO / GEO Strategist | `@pagesquad-visibility-architect` |
 | `pagesquad-conversion-architect` | Copywriter / Narrative Designer | `@pagesquad-conversion-architect` |
 | `pagesquad-brand-architect` | Visual Identity / Creative Director | `@pagesquad-brand-architect` |
-| `pagesquad-experience-architect` | Frontend Lead (Astro / Tailwind) | `@pagesquad-experience-architect` |
+| `pagesquad-experience-architect` | Frontend Lead (Astro 7 / Svelte 5 / Tailwind v4) | `@pagesquad-experience-architect` |
 | `pagesquad-automation-architect` | CRM / Webhook / Lead Automation | `@pagesquad-automation-architect` |
 | `pagesquad-insight-architect` | Analytics / GTM / A/B Testing | `@pagesquad-insight-architect` |
 
@@ -23,10 +23,6 @@ registry:
 Install locally into your current project for all supported agents:
 
 ```bash
-# Using npx (Node)
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --all
-
-# Using bunx (Bun)
 bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --all
 ```
 
@@ -56,10 +52,10 @@ Use the flag that matches your agent CLI:
 
 ```bash
 # Example: install only for Claude Code + Grok
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --claude --grok
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --claude --grok
 
 # Example: install only for Antigravity
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --antigravity
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --antigravity
 ```
 
 **Scope flags:** append `--local` (default) for workspace-level or `--global`
@@ -76,10 +72,10 @@ The Antigravity CLI auto-indexes skills and supports both explicit and semantic
 
 ```bash
 # Zero-clone (recommended)
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --antigravity
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --antigravity
 
 # Or, if you cloned the repo
-node scripts/install-skills.js --local --antigravity
+bun scripts/install-skills.js --local --antigravity
 ```
 
 ### How Skills Are Loaded
@@ -111,7 +107,7 @@ Claude Code parses `SKILL.md` frontmatter to create custom slash commands.
 
 ```bash
 npm install -g @anthropic-ai/claude-code
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --claude
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --claude
 ```
 
 ### How Skills Are Loaded
@@ -143,7 +139,7 @@ a ready-made `AGENTS.md` at your project root with links to every skill.
 npm install -g @openai/codex
 
 # Install PageSquad AI skills (generates AGENTS.md)
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --codex
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --codex
 ```
 
 ### How Skills Are Loaded
@@ -157,8 +153,8 @@ Codex reads `AGENTS.md` automatically. Reference the architect by name in your
 prompt; the `AGENTS.md` table links point to the live `pagesquad-*` `SKILL.md`
 files:
 
-> "Based on the Experience Architect guidelines, scaffold a new Astro +
-> Tailwind landing page with a LeadForm island."
+> "Based on the Experience Architect guidelines, scaffold a new Astro 7 +
+> Svelte 5 + Tailwind v4 landing page. Hydrate a LeadForm island only if the decision tree requires it."
 
 To inspect or override:
 
@@ -181,7 +177,7 @@ project-level context.
 curl -fsSL https://x.ai/cli/install.sh | bash
 
 # Install PageSquad AI skills
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --grok
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --grok
 ```
 
 ### How Skills Are Loaded
@@ -212,7 +208,7 @@ Point any agent at the skill files directly.
 ### Aider
 
 ```bash
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --local --other
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --local --other
 aider --read skills/pagesquad-visibility-architect/SKILL.md \
       --read skills/pagesquad-experience-architect/SKILL.md
 ```
@@ -226,7 +222,7 @@ Reference files with `#`:
 ### VS Code Copilot (global install)
 
 ```bash
-npx -y git+https://github.com/eddictive/pagesquad-ai-skills.git --global --other
+bunx git+https://github.com/eddictive/pagesquad-ai-skills.git --global --other
 # Point Copilot Chat at ~/.pagesquad-ai/pagesquad-*/SKILL.md
 ```
 
@@ -275,13 +271,13 @@ echo "GOOGLE_OAUTH_TOKEN=$(gcloud auth application-default print-access-token)" 
 **Method 2 — Service Account (recommended for automated/agentic use):**
 
 1. Go to [Google Cloud Console → Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
-2. Create a service account and grant it the **Editor** role (or fine-grained roles: `roles/script.admin`, `roles/spreadsheets.admin`, `roles/drive.admin`)
+2. Create a service account. Do **not** grant `roles/editor` or `roles/owner`. Enable the Google Sheets, Apps Script, and Drive APIs. The script requests only the scopes listed below; the account owns the files it creates.
 3. Create and download a JSON key file
 4. Enable the script in your shell:
 
 ```bash
 export GOOGLE_SERVICE_ACCOUNT_JSON=/path/to/your-service-account-key.json
-node skills/pagesquad-automation-architect/scripts/create-lead-sheet.js --name "Acme Leads"
+bun skills/pagesquad-automation-architect/scripts/create-lead-sheet.ts --name "Acme Leads"
 ```
 
 The script automatically mints a JWT, exchanges it for an access token, and

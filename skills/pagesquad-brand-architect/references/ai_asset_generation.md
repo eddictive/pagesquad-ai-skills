@@ -25,6 +25,7 @@ Optimizing AI models to create high-quality, on-brand visual assets.
 - **Mood Keywords**: "Serene," "Luxurious," "Trustworthy," "Spiritual."
 
 ## 5. Post-Processing & Integration
-- **Upscaling**: Use AI upscalers to ensure assets are high-resolution (4K).
-- **Format Conversion**: Convert to `WebP` or `AVIF` for web performance.
+- **Archive vs page**: Keep a high-resolution master if the brand needs it. The page does not ship that master. The mobile hero candidate is ≤ 100 KB AVIF/WebP. See `../../pagesquad-experience-architect/references/core_web_vitals.md`.
+- **Format Conversion**: Deliver AVIF or WebP through `astro:assets`, not a single full-size file.
 - **Color Correction**: Ensure the generated colors match the brand's hexadecimal codes exactly.
+- **Type**: At most two font files on the first view, self-hosted. Do not specify a Google Fonts stylesheet URL.

@@ -134,7 +134,7 @@ try {
   console.log('\n--- PageSpeed Insights Report (Bun) ---');
   console.log(`URL: ${url}`);
   console.log(`Strategy: ${strategy}`);
-  console.log(`Performance Score: ${performanceScore}  (target: 90+)`);
+  console.log(`Performance Score: ${performanceScore}  (target: 100)`);
   console.log(`SEO Score: ${seoScore}  (target: 90+)`);
   if (a11yScore !== null) console.log(`Accessibility Score: ${a11yScore}  (target: 90+)`);
   if (bpScore !== null) console.log(`Best Practices Score: ${bpScore}  (target: 90+)`);
@@ -193,12 +193,15 @@ try {
   }
   console.log('---------------------------------------\n');
 
-  const scores = [performanceScore, seoScore, a11yScore, bpScore].filter((s): s is number => s !== null);
-  if (scores.some(s => s < 90)) {
-    const weak = scores.filter(s => s < 90).length;
-    console.log(`Action Item: ${weak} categor${weak === 1 ? 'y is' : 'ies are'} below the 90 target. Advise the Experience Architect to prioritize the failing audits above.`);
+  const misses: string[] = [];
+  if (performanceScore !== null && performanceScore < 100) misses.push(`performance ${performanceScore}/100`);
+  if (seoScore !== null && seoScore < 90) misses.push(`seo ${seoScore}/100`);
+  if (a11yScore !== null && a11yScore < 90) misses.push(`accessibility ${a11yScore}/100`);
+  if (bpScore !== null && bpScore < 90) misses.push(`best-practices ${bpScore}/100`);
+  if (misses.length > 0) {
+    console.log(`Action Item: below target (${misses.join(', ')}). Performance must be 100. Map the failing audits to core_web_vitals.md and hand them to the Experience Architect.`);
   } else {
-    console.log('Status: All category scores meet the 90+ target. Visibility targets met.');
+    console.log('Status: Performance is 100. SEO, accessibility, and best-practices are 90+.');
   }
 
 } catch (err) {

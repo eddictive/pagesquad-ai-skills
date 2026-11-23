@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
- * PageSpeed Audit Utility (Node.js)
+ * PageSpeed Audit Utility (Bun)
  * Helps the Visibility Architect audit core web vitals and SEO performance.
  * 
- * Usage: GOOGLE_API_KEY=<your_api_key> node pagespeed-audit.js <url> [strategy: mobile|desktop]
+ * Usage: GOOGLE_API_KEY=<your_api_key> bun pagespeed-audit.js <url> [strategy: mobile|desktop]
  * 
  * Note for AI Agents: If the API key is missing, ask the user to provide it or check the .env file.
  */
@@ -14,7 +14,7 @@ const https = require('https');
 const apiKey = process.env.GOOGLE_API_KEY;
 
 // Parse args: supports flags (--url X, --strategy=Y) and legacy positional args.
-const USAGE = 'Usage: node pagespeed-audit.js [--url <url>] [--strategy mobile|desktop]\nAlso accepted positionally: node pagespeed-audit.js <url> [strategy]';
+const USAGE = 'Usage: bun pagespeed-audit.js [--url <url>] [--strategy mobile|desktop]\nAlso accepted positionally: bun pagespeed-audit.js <url> [strategy]';
 
 function parseArgs(argv) {
   const opts = { url: null, strategy: null };
@@ -53,7 +53,7 @@ const { url, strategy } = parseArgs(process.argv.slice(2));
 
 if (!url) {
   console.error(USAGE);
-  console.error('Example: GOOGLE_API_KEY=AIzaSy... node pagespeed-audit.js --url https://example.com --strategy desktop');
+  console.error('Example: GOOGLE_API_KEY=AIzaSy... bun pagespeed-audit.js --url https://example.com --strategy desktop');
   process.exit(1);
 }
 
@@ -90,7 +90,7 @@ https.get(apiUrl, (res) => {
       console.log('\n--- PageSpeed Insights Report ---');
       console.log(`URL: ${url}`);
       console.log(`Strategy: ${strategy}`);
-      console.log(`Performance Score: ${performanceScore}  (target: 90+)`);
+      console.log(`Performance Score: ${performanceScore}  (target: 100)`);
       console.log(`SEO Score: ${seoScore}  (target: 90+)`);
       if (a11yScore !== null) console.log(`Accessibility Score: ${a11yScore}  (target: 90+)`);
       if (bpScore !== null) console.log(`Best Practices Score: ${bpScore}  (target: 90+)`);
@@ -149,12 +149,15 @@ https.get(apiUrl, (res) => {
       }
       console.log('---------------------------------\n');
 
-      const scores = [performanceScore, seoScore, a11yScore, bpScore].filter(s => s !== null);
-      if (scores.some(s => s < 90)) {
-        const weak = scores.filter(s => s < 90).length;
-        console.log(`Action Item: ${weak} categor${weak === 1 ? 'y is' : 'ies are'} below the 90 target. Advise the Experience Architect to prioritize the failing audits above.`);
+      const misses = [];
+      if (performanceScore !== null && performanceScore < 100) misses.push(`performance ${performanceScore}/100`);
+      if (seoScore !== null && seoScore < 90) misses.push(`seo ${seoScore}/100`);
+      if (a11yScore !== null && a11yScore < 90) misses.push(`accessibility ${a11yScore}/100`);
+      if (bpScore !== null && bpScore < 90) misses.push(`best-practices ${bpScore}/100`);
+      if (misses.length > 0) {
+        console.log(`Action Item: below target (${misses.join(', ')}). Performance must be 100. Map the failing audits to core_web_vitals.md and hand them to the Experience Architect.`);
       } else {
-        console.log('Status: All category scores meet the 90+ target. Visibility targets met.');
+        console.log('Status: Performance is 100. SEO, accessibility, and best-practices are 90+.');
       }
     } catch (err) {
       console.error('Failed to parse response:', err.message);
